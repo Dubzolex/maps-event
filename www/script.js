@@ -131,7 +131,8 @@ const create = async (col) => {
                 </div>`
                 }).join("")}
         </div>
-        <div class="fx-col ai-center">
+        <div class="fx-col ai-center gap-20">
+            <div id="status" class=""></div>
             <button id="save">Save</button>
         </div>
     </div>
@@ -142,29 +143,39 @@ const create = async (col) => {
 
 
 const save = async (col) => {
-    let data = formData[col]
+    try {
+        let data = formData[col]
 
-    console.log(data)
+        console.log(data)
 
-    let post = {}
+        let post = {}
 
-    for(let f of data) {
-        const div = document.getElementById(f.key)
-        if(div) {
-            post[f.key] = div.value
-        } else {
-            post[f.key] = f.value || null
+        for(let f of data) {
+            const div = document.getElementById(f.key)
+            if(div) {
+                post[f.key] = div.value
+            } else {
+                post[f.key] = f.value || null
+            }
         }
+
+        console.log(post)
+
+        const uuid = data.find(p => p.key == "id").value
+        console.log(uuid)
+
+        await setDoc(doc(db, col, uuid), { 
+            ...post
+        })
+
+        document.getElementById("status").innerHTML = "Element ajouté"
+        await new Promise(res => setTimeout(res, 4000))
+        window.location.reload()
+
+    } catch(e) {
+         document.getElementById("status").innerHTML = "Erreur"
     }
-
-    console.log(post)
-
-    const uuid = data.find(p => p.key == "id").value
-    console.log(uuid)
-
-    await setDoc(doc(db, col, uuid), { 
-        ...post
-    })
+    
 }
 
 
@@ -194,21 +205,28 @@ const show = async (col) => {
             }).join("")}
             </thead>
             <tbody>
-            ${documents.map(doc => {
+            ${documents.map(a => {
                 return `
-                    <tr>
+                    <tr id="${a.id}">
                         ${keys.map(k => {
                             return `
                                 <td>
-                                    ${doc[k] ?? ""}
+                                    ${a[k] ?? ""}
                                 </td>`
                         }).join("")}
-                    `
+                    </tr>`
             }).join("")}
             </tbody>
         </table>
     <div>
     `
+
+    documents.map(d => {
+        document.getElementById(d.id).addEventListener("click", async () => {
+            await deleteDoc(doc(db, col, d.id))
+            show(col)
+        })
+    })
     
     
     

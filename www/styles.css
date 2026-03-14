@@ -283,9 +283,7 @@ th, td {
 }
 
 /* Effet "Zèbre" (lignes alternées) */
-tbody tr:nth-of-type(even) {
-    background-color: #f3f3f3;
-}
+
 
 /* Effet au survol (hover) sur la ligne */
 tbody tr:hover {
