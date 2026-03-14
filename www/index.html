@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body style="height: 100vh;">
+<header>
+    <h1>title</h1>
+    <nav>
+        <a href="/">Accueil</a>
+        <a href="/login/">Help</a>
+    </nav>
+</header>
+<section class="fx-row grow" >
+    <aside id="screen" class="fx-col jc-between w-200 scroll"></aside>
+    <div class="fx-col grow">
+        
+        <div id="tools" class="fx-row jc-between gap-10 ai-center">
+                <div class="fx-col gap-10 w-200">
+                    <input type="text" id="name" placeholder="Name">
+                </div>
+                <div class="fx-col gap-10 w-200">
+                    <input type="text" id="email" placeholder="Email">
+                </div>
+                <div class="fx-col gap-10 w-200">
+                    <input type="text" id="password" placeholder="Password">
+                </div>
+                <button id="add">Add</button>
+            
+        </div>
+        <div id="main" class="fx-col grow gap-10"></div>
+    </div>
+</section>
+</body>
+
+<script type="module" src="script.js"></script>
+</html>
