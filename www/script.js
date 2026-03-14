@@ -35,8 +35,7 @@ const formData = {
         },
         {
             "key": "id",
-            "value": crypto.randomUUID(),
-            "voiture": "clio4"
+            "value": crypto.randomUUID()
         }
 
     ],
@@ -80,10 +79,6 @@ const formData = {
         {
             "key": "longitude",
             "type": "number"
-        },
-        {
-            "key": "cityId",
-            "type": "text",
         },
         {
             "key": "date",
