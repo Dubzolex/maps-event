@@ -140,9 +140,16 @@ const create = async (col) => {
     document.getElementById("save").addEventListener("click", () => save(colparam))
 }
 
-
+let isSend = false
 
 const save = async (col) => {
+    if(isSend) {
+        document.getElementById("status").innerHTML = "Attendez..."
+        return
+    }
+
+    isSend = true
+
     try {
         let data = formData[col]
 
