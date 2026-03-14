@@ -76,13 +76,9 @@
 .h-400{min-height: 400px;}
 .h-500{min-height: 500px;}
 .h-600{min-height: 600px;}
+.h-700{min-height: 700px;}
+.h-800{min-height: 800px;}
 
-
-
-.gd-row{
-    display: grid;
-    grid-template-columns: repeat(2,1fr);
-}
 
 
 .text-center{text-align: center;}
@@ -134,19 +130,6 @@ header i{
 }
 
 
-header {
-    width: 100%;
-    display: flex;
-    background-color:#2883a7;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    height: 70px;
-    box-shadow: 0 10px 5px 0px rgba(127, 127, 127, 0.3);
-    z-index: 100;
-}
-
 a{
     color: inherit;
 }
@@ -164,18 +147,9 @@ h2{
     font-family: Arial, Helvetica, sans-serif;
     font-size: 24px;
     text-align: center;
-    color: #444;
 }
 
-h3{
-    font-size: 20px;
-    text-align: center;
-}
-h4{
-    color: black;
-    font-size: 16px; 
-    text-align: center;
-}
+
 
 .text-center p, p.text-center{
     text-align: center;
@@ -185,19 +159,6 @@ h4{
 }
 
 
-/* Force l'affichage de l'œil natif sur Edge et Chrome */
-input[type="password"]::-ms-reveal {
-    display: block !important;
-    width: 20px;
-    height: 20px;
-}
-
-/* S'assure que le navigateur ne cache pas l'icône lors du remplissage automatique */
-input[type="password"]::-webkit-contacts-auto-fill-button,
-input[type="password"]::-webkit-credentials-auto-fill-button {
-    visibility: visible !important;
-}
-
 
 section {
     width: 100%;
@@ -205,56 +166,21 @@ section {
 
 
 .container{
-    position: relative;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
+    border: 2px solid #bbb;
+    border-radius: 0 0 10px 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
     background-color: #f7f7f7;
 }
 
 
-.connexion i, .play i{
-    font-size: 24px;
-    cursor: pointer;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-.green{
-    color: green;
-}
-.red{
-    color: red;
-}
-
-
-
-
-
-#status, .status{
-    font-size: 12px;
-}
-
-
-
-
-form input{
+input{
     padding: 8px;
     border-radius: 4px;
     border: 1px solid #ccc;
     width: 100%;
     font-size: 16px;
+    width: 360px;
 }
 
 
@@ -271,12 +197,6 @@ input[type=number]{
     /*-moz-appearance: textfield;*/
 }
 
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
 
 select{
     border-radius: 4px;
@@ -285,16 +205,6 @@ select{
     height: 32px;
     width: 120px;
     padding: 0 0 0 8px;
-}
-
-.games select{
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    font-size: 12px;
-    height: 32px;
-    width: 160px;
-    padding: 0 0 0 10px;
-
 }
 
 
@@ -310,165 +220,74 @@ button {
 }
 button:hover {
     background-color: #2e83b7;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 button a{
     text-decoration: none;
 }
 
-
-
-
-
-
-
-img{
-    width: 100px;
-}
-
-
-.link a, a.link{
-    font-size: 12px;
-}
-.link a:hover, a.link:hover{
-    color: blue;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-section.fx-row {
-    height: 100vh;
-    overflow: hidden; /* Empêche la page entière de scroller */
-}
-
-section.fx-col {
-    min-height: 100vh;
-    overflow: hidden;
-}
-
-
-
-#main { /* Prend toute la place restante */
-      /* Affiche la barre de scroll si le contenu dépasse */
-      
-          /* Prend tout l'espace restant */
-    overflow-y: auto;   /* Active le scroll vertical si nécessaire */
-    min-height: 0;      /* Crucial pour Firefox/Chrome dans certains contextes Flex */
-    padding: 40px;
-}
-
-/* Optionnel : Customiser la barre de scroll pour qu'elle soit discrète */
-#main::-webkit-scrollbar {
-    width: 8px;
-}
-#main::-webkit-scrollbar-thumb {
-    background: #aaa;
-    border-radius: 4px;
-}
-
-
-
-/* Optionnel : Customiser la barre de scroll pour qu'elle soit discrète */
-
-.scroll { /* Prend toute la place restante */
-      /* Affiche la barre de scroll si le contenu dépasse */
-      
-          /* Prend tout l'espace restant */
-    overflow-y: auto;   /* Active le scroll vertical si nécessaire */
-    min-height: 0;      /* Crucial pour Firefox/Chrome dans certains contextes Flex */
-    z-index: 0;
-}
-.scroll::-webkit-scrollbar {
-    width: 8px;
-}
-.scroll::-webkit-scrollbar-thumb {
-    background: #aaa;
-    border-radius: 4px;
-}
-
-/* 2. L'aside reste fixe naturellement car il est dans un parent de 100vh */
-
-
-
-#tools {
-    padding: 20px;
-    box-shadow: 0 10px 10px 0px rgba(127, 127, 127, 0.3);
-    background-color: #fff;
-
-    position: relative; /* Nécessaire pour le z-index */
-    z-index: 20;        /* Passe au-dessus du #main */
-    
-    /* L'ombre légère pour la transition */
-
-    /* Optionnel : un peu de padding pour ne pas coller à l'ombre */
-}
-
-
-
-
-aside{
-    background-color: #fff;
-    box-shadow: 10px 0 10px 0px rgba(127, 127, 127, 0.3);
-    height: 100%;
-    z-index: 10;
-    
-}
-
-
-aside button{
-    height: 50px;
-    width: 70%;
-    border: 1px solid transparent;
-    border-radius: 0px;
-    color: #222;
-    font-weight: 600;
+.onglet{
+    border: 2px solid #aaa;
+    padding: 10px;
     cursor: pointer;
-    transition: all 0.3s ease; /* Animation douce */
-    box-shadow: 10px 10px 10px rgba(127, 127, 127, 0.3);
-    background-color: #f0f7ff;
-    border-color: gray;
-    font-weight: 24px;
-    border-radius: 0 10px 10px 0 ;
-    z-index: 10; 
 }
 
-/* Effet au survol (Hover) */
-aside button:hover {
-    background-color: #f0f7ff;
-    border-color: #007bff;
-    color: #007bff;
-    scale: 1.1;/* Petit décalage vers la droite */
-    font-weight: 600;
-    box-shadow: 8px 8px 8px rgba(0, 127, 255, 0.3);
-    /*transform: translateX(10%);*/
-    width: 92%;
+.onglet:not(.active):hover {
+    background-color: #ccc;
 }
 
-/* État Actif (L'écran actuellement sélectionné) */
-aside button.active {
-    background-color: #205b7f;
-    color: white;
-    border-color: #205b7f;
-    box-shadow: 10px 10px 10px rgba(0,123,255,0.3);
-    width: 92%;
-    scale: 1.1;
+.onglet.active {
+    border: none;
+    border-top: 2px solid #aaa;
 }
 
-aside button p{
-    display: none;
+
+.scroll {
+    overflow-x: auto; 
+    overflow-y: auto;  /* Affiche la barre seulement si le contenu dépasse */
+    white-space: nowrap; /* Empêche le texte ou les éléments de revenir à la ligne */
+    display: flex;     /* Optionnel : aligne les éléments enfants sur une ligne */
 }
-aside button:hover p, aside button.active p{
-    display: block;
+
+
+table {
+    width: 100%;
+    border-collapse: collapse; /* Fusionne les bordures */
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    border-radius: 5px 5px 0 0;
+    overflow: hidden; /* Pour que le border-radius fonctionne */
+}
+
+/* Style de l'en-tête */
+thead tr {
+    background-color: #1899a5;
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+    min-width: 100px;
+}
+
+/* Style des cellules */
+th, td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #dddddd;
+}
+
+/* Effet "Zèbre" (lignes alternées) */
+tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+/* Effet au survol (hover) sur la ligne */
+tbody tr:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+
+/* Dernière ligne */
+tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
 }

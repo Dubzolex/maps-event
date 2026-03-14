@@ -2,40 +2,57 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Maps Event</title>
 
     <link rel="stylesheet" href="styles.css">
 </head>
 
-<body style="height: 100vh;">
-<header>
-    <h1>title</h1>
-    <nav>
-        <a href="/">Accueil</a>
-        <a href="/login/">Help</a>
-    </nav>
-</header>
-<section class="fx-row grow" >
-    <aside id="screen" class="fx-col jc-between w-200 scroll"></aside>
-    <div class="fx-col grow">
-        
-        <div id="tools" class="fx-row jc-between gap-10 ai-center">
-                <div class="fx-col gap-10 w-200">
-                    <input type="text" id="name" placeholder="Name">
+<body>
+
+<section class="grow fx-col jc-center ai-center">
+    <div class="fx-col container w-1000 h-800 gep-20">
+        <div class="fx-col gap-20">
+            <div class="fx-row">
+                <div id="users" class="fx-col grow onglet">
+                    <h2>Users</h2>
                 </div>
-                <div class="fx-col gap-10 w-200">
-                    <input type="text" id="email" placeholder="Email">
+                <div id="events" class="fx-col grow onglet">
+                    <h2>Events</h2>
                 </div>
-                <div class="fx-col gap-10 w-200">
-                    <input type="text" id="password" placeholder="Password">
+                <div id="cities" class="fx-col grow onglet">
+                    <h2>Cities</h2>
                 </div>
-                <button id="add">Add</button>
-            
+            </div>
+            <div class="fx-row">
+                <div id="create" class="fx-col grow onglet">
+                    <h4>Create</h4>
+                </div>
+                <div id="show" class="fx-col grow onglet">
+                    <h4>Show</h4>
+                </div>
+            </div>
         </div>
-        <div id="main" class="fx-col grow gap-10"></div>
+        
+        <div class="fx-col grow gap-20 p-20">
+            <div id="form" class="fx-row jc-center grow"></div>
+            
+        <div>
     </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
 </section>
 </body>
 
 <script type="module" src="script.js"></script>
+<script type="module" src="index.js"></script>
 </html>
