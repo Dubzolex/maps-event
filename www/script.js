@@ -10,7 +10,7 @@ const formData = {
     "users": [
         
         {
-            "key": "username",
+            "key": "userName",
             "type": "text",
         },
         {
@@ -121,7 +121,7 @@ const create = async (col) => {
     let data = formData[col]
 
     form.innerHTML = `
-    <div class="fx-col jc-between">
+    <div class="fx-col jc-between form">
         <div class="fx-col jc-evenly grow">
             ${data.filter(i => i.type).map(i => {
                 return `
@@ -200,7 +200,7 @@ const show = async (col) => {
                         ${keys.map(k => {
                             return `
                                 <td>
-                                    ${doc[k]}
+                                    ${doc[k] ?? ""}
                                 </td>`
                         }).join("")}
                     `
