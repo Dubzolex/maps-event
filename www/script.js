@@ -223,8 +223,12 @@ const show = async (col) => {
 
     documents.map(d => {
         document.getElementById(d.id).addEventListener("click", async () => {
-            await deleteDoc(doc(db, col, d.id))
-            show(col)
+            if(window.confirm("Voulez-vous supprimer cet élément ?")) {
+                await deleteDoc(doc(db, col, d.id))
+                show(col)
+            }
+            
+            
         })
     })
     
