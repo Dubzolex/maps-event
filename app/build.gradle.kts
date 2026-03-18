@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
 }
 
 android {
@@ -39,6 +40,7 @@ android {
     }
     buildFeatures {
         compose = true
+        viewBinding = true
     }
 }
 
@@ -57,6 +59,8 @@ dependencies {
     implementation(libs.play.services.mlkit.text.recognition.common)
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.benchmark.traceprocessor)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.constraintlayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -72,4 +76,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.1.0")
     // Ajoute ceci pour avoir accès à toutes les icônes Material
     implementation("androidx.compose.material:material-icons-extended")
+
+    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+    implementation("com.google.firebase:firebase-firestore-ktx")
 }
