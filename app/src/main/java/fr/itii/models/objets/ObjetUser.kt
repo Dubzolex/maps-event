@@ -1,6 +1,6 @@
-package fr.itii.models.objects
+package fr.itii.models.objets
 
-data class User(
+data class ObjetUser(
     val name: String = "",
     val location: String = "",
     val date: String = "",

@@ -1,8 +1,5 @@
-package fr.itii.utils
+package fr.itii.ui.page.menu
 
-import androidx.benchmark.traceprocessor.Row
-import androidx.compose.animation.scaleIn
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,7 +16,6 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -71,7 +67,7 @@ fun MyCustomNavItem(
     onClick: () -> Unit
 ) {
     // On définit la couleur de la bulle
-    val background = if (isSelected) Color.Black else Color.Transparent
+    val background = if (isSelected) Color.Blue else Color.Transparent
     val contentColor = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
 
     // On utilise une Box avec un Modifier.clip pour faire la forme de bulle

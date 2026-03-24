@@ -15,12 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import fr.itii.ui.theme.MyApplicationTheme
 
-import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import fr.itii.utils.M
-import fr.itii.utils.MyNavigation
-import fr.itii.utils.MyProfilAccount
-import fr.itii.utils.MySearchable
+import fr.itii.ui.page.maps.MyMaps
+import fr.itii.ui.page.menu.MyNavigation
+import fr.itii.ui.page.profil.account.MyProfilAccount
+import fr.itii.ui.page.search.MySearchable
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +50,7 @@ fun MainApp() {
         // 2. Le conteneur qui change de contenu
         Box(modifier = Modifier.padding(innerPadding)) {
             when (selectedIndex) {
-                0 -> MyMapsAct()      // Si 0, on affiche la carte
+                0 -> MyMaps()      // Si 0, on affiche la carte
                 1 -> MySearchable()   // Si 1, on affiche la recherche
                 2 -> MyProfilAccount()  // Si 2, on affiche le profil
             }

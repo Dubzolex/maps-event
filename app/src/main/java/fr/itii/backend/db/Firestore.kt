@@ -1,10 +1,10 @@
-package fr.itii.backend
+package fr.itii.backend.db
 
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
-import fr.itii.models.objects.User
+import fr.itii.models.objets.ObjetUser
 
-class DBFirebase {
+class Firestore {
 
     val db = Firebase.firestore
 
@@ -29,15 +29,15 @@ class DBFirebase {
 
         db.collection("events").add(data)
 
-        val userParams = User("Enzo", "Lyon", "2026-04-10")
+        val userParams = ObjetUser("Enzo", "Lyon", "2026-04-10")
         // Avec 2 paramètres seulement
-        val user1 = User(id = 1, name = "Enzo")
+        val user1 = ObjetUser(id = 1, name = "Enzo")
 
 // Avec tous les paramètres
-        val user2 = User("2", "Alice", "alice@mail.com", 25, "Paris")
+        val user2 = ObjetUser("2", "Alice", "alice@mail.com", 25, "Paris")
 
 // En nommant les paramètres (très lisible)
-        val user3 = User(name = "Bob", city = "Lyon")
+        val user3 = ObjetUser(name = "Bob", city = "Lyon")
 // On définit l'ID du document manuellement
         db.collection("users").document("enzo_123").set(userParams)
     }

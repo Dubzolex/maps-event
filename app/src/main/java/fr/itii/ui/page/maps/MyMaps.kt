@@ -1,15 +1,15 @@
+package fr.itii.ui.page.maps
+
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
 
-
-
-
 @Composable
-fun MyMapsAct() {
+fun MyMaps() {
     // 1. Définir la position initiale (ex: Rouen ou Paris)
     val rouen = LatLng(49.4431, 1.0993)
 
@@ -22,7 +22,7 @@ fun MyMapsAct() {
     GoogleMap(
         modifier = Modifier.fillMaxSize(),
         cameraPositionState = cameraPositionState,
-        properties = MapProperties(isMyLocationEnabled = true), // Optionnel: voir sa position
+        properties = MapProperties(isMyLocationEnabled = false), // Optionnel: voir sa position
         onMapClick = { latLng ->
             // Ici tu peux ajouter la logique Firestore : save(latLng)
             println("Clic sur la carte à : $latLng")
@@ -43,8 +43,8 @@ fun MyMapsAct() {
         Circle(
             center = rouen,
             radius = 1000.0, // 1km
-            fillColor = androidx.compose.ui.graphics.Color.Red.copy(alpha = 0.2f),
-            strokeColor = androidx.compose.ui.graphics.Color.Red,
+            fillColor = Color.Red.copy(alpha = 0.2f),
+            strokeColor = Color.Red,
             strokeWidth = 2f
         )
     }

@@ -1,37 +1,42 @@
 package fr.itii.models.maps
 
+import androidx.compose.ui.graphics.Color
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.maps.model.PolylineOptions
-import com.google.android.gms.maps.model.CircleOptions
 
-class MapPointer {
+class MapPointer(
+    var coordinates: LatLng,
+    var title: String,
+    var subTitle: String
+) : MapElement() {
 
+    private var markerGoogle: Marker? = null
 
-    val polyline = googleMap.addPolyline(
-        PolylineOptions()
-            .add(LatLng(48.85, 2.35), LatLng(48.81, 2.39)) // Ajoute tes points ici
-            .width(10f)              // Épaisseur
-            .color(Color.RED)        // Couleur (import android.graphics.Color)
-            .geodesic(true)          // Suit la courbure de la terre
-    )
+    fun addToMap(map: GoogleMap): Marker? {
+        val options = MarkerOptions()
+            .position(this.coordinates)
+            .title(this.title)
+            .snippet(this.subTitle)
 
-    val paris = LatLng(48.8566, 2.3522)
+        this.markerGoogle = map.addMarker(options)
+        return this.markerGoogle
+    }
 
-    val marker = googleMap.addMarker(
-        MarkerOptions()
-            .position(paris)
-            .title("Marker à Paris")
-            .snippet("Ma super description")
-    )
+    fun removeFromMap() {
+        markerGoogle?.remove() // Le ?. remplace le "if != null"
+        markerGoogle = null
+    }
+/*
+    fun setTitle(value: String) {
+        this.title = value
+        markerGoogle?.title = value // Mise à jour visuelle immédiate
+    }*//*
 
-    val circle = googleMap.addCircle(
-        CircleOptions()
-            .center(paris)
-            .radius(1000.0)             // Rayon en mètres
-            .strokeColor(Color.BLUE)    // Couleur du bord
-            .fillColor(0x220000FF)      // Bleu transparent (format ARGB)
-            .strokeWidth(5f)
-    )
+    fun setSubTitle(value: String) {
+        this.subTitle = value
+        markerGoogle?.snippet = value
+    }*/
+
 }

@@ -1,4 +1,4 @@
-package fr.itii.utils
+package fr.itii.ui.container
 
 class PackageListItem {
 
