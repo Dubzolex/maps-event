@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import fr.itii.utils.tables.Events
+import fr.itii.models.tables.utils.tables.Events
 
 @Composable
 fun ContainerEvent(event: Events) {

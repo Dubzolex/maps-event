@@ -1,8 +1,8 @@
-package fr.itii.backend.db
+package fr.itii.remote.backend.db
 
-import fr.itii.utils.tables.Cities
-import fr.itii.utils.tables.Events
-import fr.itii.utils.tables.Users
+import fr.itii.models.tables.utils.tables.Cities
+import fr.itii.models.tables.utils.tables.Events
+import fr.itii.models.tables.utils.tables.Users
 
 interface Fireable {
 

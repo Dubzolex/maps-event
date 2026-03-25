@@ -24,7 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import fr.itii.utils.tables.Events
+import fr.itii.models.tables.utils.tables.Events
 
 
 @Composable

@@ -1,15 +1,12 @@
 package fr.itii.ui.page.maps
 
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
-import fr.itii.utils.tables.Events
+import fr.itii.models.tables.utils.tables.Events
 
 
-import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import android.util.Log
-import androidx.compose.runtime.remember
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 

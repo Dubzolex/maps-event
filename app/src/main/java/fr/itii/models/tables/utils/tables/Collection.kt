@@ -1,6 +1,6 @@
-package fr.itii.utils
+package fr.itii.models.tables.utils.tables
 
-enum class Table(val nameTable: String) {
+enum class Collection(val nameTable: String) {
     USER("users"),
     EVENT("events"),
     CITY("cities"),

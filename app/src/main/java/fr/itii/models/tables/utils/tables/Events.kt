@@ -1,4 +1,4 @@
-package fr.itii.utils.tables
+package fr.itii.models.tables.utils.tables
 
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.firestore.DocumentId

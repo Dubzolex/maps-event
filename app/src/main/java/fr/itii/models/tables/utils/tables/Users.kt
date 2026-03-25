@@ -1,4 +1,4 @@
-package fr.itii.utils.tables
+package fr.itii.models.tables.utils.tables
 
 data class Users(
     val name: String = "",

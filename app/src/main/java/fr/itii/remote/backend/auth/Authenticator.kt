@@ -1,4 +1,4 @@
-package fr.itii.backend.auth
+package fr.itii.remote.backend.auth
 
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth

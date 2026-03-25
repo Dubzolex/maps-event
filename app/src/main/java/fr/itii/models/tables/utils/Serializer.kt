@@ -1,8 +1,8 @@
-package fr.itii.utils
+package fr.itii.models.tables.utils
 
 import com.google.android.gms.maps.model.LatLng
-import fr.itii.utils.maps.MapPointer
-import fr.itii.utils.tables.Events
+import fr.itii.models.tables.utils.maps.MapPointer
+import fr.itii.models.tables.utils.tables.Events
 
 class Serializer {
 

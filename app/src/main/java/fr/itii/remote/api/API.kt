@@ -1,7 +1,4 @@
-package fr.itii.api
-
-import com.google.firebase.auth.FirebaseUser
-import fr.itii.backend.auth.Authenticator
+package fr.itii.remote.api
 
 class API {
 /*
