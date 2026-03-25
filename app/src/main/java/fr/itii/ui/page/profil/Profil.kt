@@ -1,7 +1,7 @@
 package fr.itii.ui.page.profil
 
 import androidx.compose.runtime.Composable
-import fr.itii.remote.backend.auth.Authenticator
+import fr.itii.data.remote.auth.Authenticator
 
 @Composable
 fun Profil(auth: Authenticator) {

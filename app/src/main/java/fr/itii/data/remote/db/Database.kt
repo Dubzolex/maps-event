@@ -1,7 +1,7 @@
-package fr.itii.remote.backend.db
+package fr.itii.data.remote.db
 
-import fr.itii.models.tables.utils.tables.Events
-import fr.itii.models.tables.utils.tables.Users
+import fr.itii.domain.models.collections.Events
+import fr.itii.domain.models.collections.Users
 import java.util.EventObject
 
 class Database {

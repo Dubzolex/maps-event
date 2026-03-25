@@ -1,7 +1,7 @@
 package fr.itii.ui.page.maps
 
 import androidx.compose.runtime.mutableStateListOf
-import fr.itii.models.tables.utils.tables.Events
+import fr.itii.domain.models.collections.Events
 
 
 import androidx.lifecycle.ViewModel

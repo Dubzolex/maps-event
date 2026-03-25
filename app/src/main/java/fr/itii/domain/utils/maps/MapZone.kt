@@ -1,4 +1,4 @@
-package fr.itii.models.tables.utils.maps
+package fr.itii.domain.utils.maps
 
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.Circle

@@ -1,4 +1,4 @@
-package fr.itii.models.tables.utils.maps
+package fr.itii.domain.utils.maps
 
 
 open class MapElement() {

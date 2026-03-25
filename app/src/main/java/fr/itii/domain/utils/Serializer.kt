@@ -1,8 +1,8 @@
-package fr.itii.models.tables.utils
+package fr.itii.domain.utils
 
 import com.google.android.gms.maps.model.LatLng
-import fr.itii.models.tables.utils.maps.MapPointer
-import fr.itii.models.tables.utils.tables.Events
+import fr.itii.domain.models.collections.Events
+import fr.itii.domain.utils.maps.MapPointer
 
 class Serializer {
 
@@ -11,7 +11,8 @@ class Serializer {
         return MapPointer(
             coordinates = LatLng(objet.latitude, objet.longitude),
             title = objet.name,
-            subTitle = objet.ville + " - " + objet.adresse)
+            subTitle = objet.ville + " - " + objet.adresse
+        )
     }
 
 

@@ -1,4 +1,4 @@
-package fr.itii.remote.api
+package fr.itii.data.api
 
 class API {
 /*
