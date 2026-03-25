@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 
 
 @Composable
-fun MyProfilAccount() {
+fun Account() {
     Text(
         text = "Salut je presente mon profil ENZO"
     )

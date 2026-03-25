@@ -17,7 +17,7 @@ import fr.itii.ui.theme.MyApplicationTheme
 
 import androidx.compose.runtime.*
 import fr.itii.ui.page.maps.Maps
-import fr.itii.ui.container.Navigation
+import fr.itii.ui.nav.Navigation
 import fr.itii.ui.page.profil.MyProfilAccount
 import fr.itii.ui.page.search.MySearchable
 

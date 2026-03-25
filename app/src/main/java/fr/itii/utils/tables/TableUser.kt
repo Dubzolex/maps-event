@@ -1,6 +1,6 @@
-package fr.itii.utils.objets
+package fr.itii.utils.tables
 
-data class ObjetUser(
+data class TableUser(
     val name: String = "",
     val location: String = "",
     val date: String = "",

@@ -3,7 +3,7 @@ package fr.itii.backend.db.test
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import fr.itii.utils.Table
-import fr.itii.utils.objets.ObjetUser
+import fr.itii.utils.tables.TableUser
 
 class Firestore {
 
@@ -24,8 +24,8 @@ class Firestore {
                 }
     }
 
-    fun add(user: ObjetUser) {
-        add(Table.USER, user.id.toString(), ObjetUser => HashMap())
+    fun add(user: TableUser) {
+        add(Table.USER, user.id.toString(), TableUser => HashMap())
     }
 
 
@@ -59,7 +59,7 @@ class Firestore {
         db.collection(table).add(data)
     }
     // type data class
-    fun add(data: ObjetUser)  {
+    fun add(data: TableUser)  {
         db.collection("users").add(data)
 
     }

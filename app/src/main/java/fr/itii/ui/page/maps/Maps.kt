@@ -1,5 +1,6 @@
 package fr.itii.ui.page.maps
 
+import androidx.compose.foundation.gestures.snapping.SnapPosition.Center.position
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -7,9 +8,13 @@ import androidx.compose.ui.graphics.Color
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
+import fr.itii.utils.tables.TableEvent
+
 
 @Composable
-fun Maps() {
+fun Maps(
+    viewModel: MapsViewModel
+) {
     // 1. Définir la position initiale (ex: Rouen ou Paris)
     val rouen = LatLng(49.4431, 1.0993)
 
@@ -28,7 +33,24 @@ fun Maps() {
             println("Clic sur la carte à : $latLng")
         }
     ) {
-        // 4. Ajouter un Marqueur interactif
+
+
+        viewModel.eventsList.forEach { event ->
+            // Pour chaque event, on crée un marqueur
+            Marker(
+                title = event.name,
+                snippet = event.adresse,
+                onClick = {
+                    println("Marqueur cliqué !")
+                    false
+                }
+            )
+        }
+
+
+
+
+        /*// 4. Ajouter un Marqueur interactif
         Marker(
             state = MarkerState(position = rouen),
             title = "Ma Position",
@@ -46,6 +68,6 @@ fun Maps() {
             fillColor = Color.Red.copy(alpha = 0.2f),
             strokeColor = Color.Red,
             strokeWidth = 2f
-        )
+        )*/
     }
 }

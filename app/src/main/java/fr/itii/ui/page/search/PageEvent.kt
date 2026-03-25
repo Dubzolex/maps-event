@@ -24,7 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import fr.itii.utils.objets.ObjetEvent
+import fr.itii.utils.tables.TableEvent
 import fr.itii.ui.container.ContainerEvent
 
 
@@ -35,7 +35,7 @@ fun MySearchable() {
 
     // Génération d'une liste factice de 10 événements
     val eventsList = List(10) { i ->
-        ObjetEvent(
+        TableEvent(
             name = "Événement $i",
             ville = "Rouen",
             date = "20/03/2026",
