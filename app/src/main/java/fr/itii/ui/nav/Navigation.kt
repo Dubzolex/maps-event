@@ -13,7 +13,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun Navigation(selectedItem: Int, onItemSelected: (Int) -> Unit) {
+fun Navigation(
+    selectedItem: Int,
+    onItemSelected: (Int) -> Unit
+) {
     NavigationBar {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -26,12 +29,14 @@ fun Navigation(selectedItem: Int, onItemSelected: (Int) -> Unit) {
                 isSelected = selectedItem == 0,
                 onClick = { onItemSelected(0) }
             )
+
             NavigationItem(
                 icon = Icons.Filled.Search,
                 label = "Search",
                 isSelected = selectedItem == 1,
                 onClick = { onItemSelected(1) }
             )
+
             NavigationItem(
                 icon = Icons.Filled.AccountCircle,
                 label = "Profil",
@@ -41,6 +46,3 @@ fun Navigation(selectedItem: Int, onItemSelected: (Int) -> Unit) {
         }
     }
 }
-
-
-

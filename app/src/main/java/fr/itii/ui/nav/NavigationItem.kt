@@ -1,11 +1,11 @@
 package fr.itii.ui.nav
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -26,33 +26,29 @@ fun NavigationItem(
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
-    // On définit la couleur de la bulle
-    val background = if (isSelected) Color.Blue else Color.Transparent
-    val contentColor = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
+    val backgroundColor = if (isSelected) MaterialTheme.colorScheme.primary.copy(alpha = 0.15f) else Color.Transparent
+    val contentColor = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
 
-    // On utilise une Box avec un Modifier.clip pour faire la forme de bulle
-    Box(
+    Row(
         modifier = Modifier
-            .padding(8.dp)
-            .clip(RoundedCornerShape(12.dp)) // Bords très arrondis pour la bulle
-            //.background(background)
+            .clip(RoundedCornerShape(20.dp))
+            .background(backgroundColor)
             .clickable { onClick() }
-            .padding(horizontal = 16.dp, vertical = 10.dp)
-            .width(80.dp), // Espace interne de la bulle
-        contentAlignment = Alignment.Center
+            .padding(horizontal = 14.dp, vertical = 10.dp)
+            .widthIn(min = 90.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Column(
-            verticalArrangement = Arrangement.spacedBy(10.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            if(isSelected) {
-                Icon(icon, contentDescription = null, tint = background)
-                Text(text = label, color = background, fontWeight = FontWeight.Bold)
-            } else {
-                Icon(icon, contentDescription = null, tint = contentColor)
-                Text(text = label, color = contentColor)
-            }
+        Icon(
+            imageVector = icon,
+            contentDescription = label,
+            tint = contentColor
+        )
 
-        }
+        Text(
+            text = label,
+            color = contentColor,
+            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+        )
     }
 }

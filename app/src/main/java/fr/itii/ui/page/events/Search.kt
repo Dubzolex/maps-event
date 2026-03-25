@@ -1,5 +1,6 @@
 package fr.itii.ui.page.events
 
+import android.os.Parcelable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -28,7 +29,7 @@ import fr.itii.domain.models.collections.Events
 
 
 @Composable
-fun MySearchable() {
+fun MySearchable(eventsList: Parcelable, onEventClick: Function<Unit>) {
     // État pour le texte de recherche
     var searchQuery by remember { mutableStateOf("") }
 
@@ -37,7 +38,7 @@ fun MySearchable() {
         Events(
             name = "Événement $i",
             ville = "Rouen",
-            date = "20/03/2026",
+            date = "$i/03/2026",
             adresse = "$i Rue de la République"
         )
     }

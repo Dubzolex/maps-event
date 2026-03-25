@@ -1,40 +1,34 @@
 package fr.itii.ui.page.maps
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
+import androidx.lifecycle.ViewModel
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
 import fr.itii.domain.models.collections.Events
 
 
-import androidx.lifecycle.ViewModel
-import com.google.firebase.firestore.FirebaseFirestore
-import android.util.Log
-import com.google.firebase.Firebase
-import com.google.firebase.firestore.firestore
-
 class MapsViewModel : ViewModel() {
 
-    private val db: FirebaseFirestore = Firebase.firestore
-
-    // Une liste réactive d'événements que Compose va observer
-    // Utiliser mutableStateListOf permet à Compose de détecter les ajouts/suppressions
     val eventsList = mutableStateListOf<Events>()
 
+    val db = Firebase.firestore
+
+
     init {
-        // On lance la récupération dès que le ViewModel est créé
-        loadEvents()
+        loadFakeEvents()
     }
 
-    private fun loadEvents() {
-        // On écoute la collection "events" (ou utilise ton Enum Table.EVENTS.nameTable)
-
+    private fun loadFakeEvents() {
         eventsList.clear()
 
         eventsList.addAll(
             listOf(
                 Events(
                     id = "1",
-                    name = "Concert Rouen",
+                    name = "Chez Marco",
                     date = "10/04/2026",
-                    type = "Concert",
+                    type = "Restaurant",
                     ville = "Rouen",
                     adresse = "12 rue Victor Hugo",
                     latitude = 49.4431,
@@ -43,7 +37,18 @@ class MapsViewModel : ViewModel() {
                 ),
                 Events(
                     id = "2",
-                    name = "Match de foot",
+                    name = "Parc des Fleurs",
+                    date = "12/04/2026",
+                    type = "Parc",
+                    ville = "Rouen",
+                    adresse = "Avenue des arbres",
+                    latitude = 49.4470,
+                    longitude = 1.0930,
+                    creator = "Mike"
+                ),
+                Events(
+                    id = "3",
+                    name = "Match amical",
                     date = "15/04/2026",
                     type = "Sport",
                     ville = "Rouen",
@@ -53,10 +58,10 @@ class MapsViewModel : ViewModel() {
                     creator = "Mike"
                 ),
                 Events(
-                    id = "3",
-                    name = "Pièce théâtre",
+                    id = "4",
+                    name = "Pièce de théâtre",
                     date = "20/04/2026",
-                    type = "Théâtre",
+                    type = "Culture",
                     ville = "Rouen",
                     adresse = "Centre ville",
                     latitude = 49.4400,
@@ -65,6 +70,8 @@ class MapsViewModel : ViewModel() {
                 )
             )
         )
+
+
 
         // Dans ton MapsViewModel
         db.collection("events").addSnapshotListener { snapshot, e ->
@@ -75,7 +82,9 @@ class MapsViewModel : ViewModel() {
 
             if (snapshot != null) {
                 try {
+
                     val items = snapshot.toObjects(Events::class.java)
+
                     eventsList.addAll(items)
                 } catch (exception: Exception) {
                     // Si ça plante encore, regarde ce log, il te dira exactement quel champ pose problème
@@ -83,6 +92,12 @@ class MapsViewModel : ViewModel() {
                 }
             }
         }
+
+
+
+    }
+
+    fun addEvent(event: Events) {
+        eventsList.add(event)
     }
 }
-
