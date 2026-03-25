@@ -1,4 +1,4 @@
-package fr.itii.ui.page.profil.account
+package fr.itii.ui.page.profil
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable

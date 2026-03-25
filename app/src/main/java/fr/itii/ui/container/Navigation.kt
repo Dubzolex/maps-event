@@ -1,4 +1,4 @@
-package fr.itii.ui.page.menu
+package fr.itii.ui.container
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -28,26 +28,26 @@ import androidx.compose.ui.unit.dp
 
 
 @Composable
-fun MyNavigation(selectedItem: Int, onItemSelected: (Int) -> Unit) {
+fun Navigation(selectedItem: Int, onItemSelected: (Int) -> Unit) {
     NavigationBar {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            MyCustomNavItem(
+            NavigationItem(
                 icon = Icons.Filled.LocationOn,
                 label = "Maps",
                 isSelected = selectedItem == 0,
                 onClick = { onItemSelected(0) }
             )
-            MyCustomNavItem(
+            NavigationItem(
                 icon = Icons.Filled.Search,
                 label = "Search",
                 isSelected = selectedItem == 1,
                 onClick = { onItemSelected(1) }
             )
-            MyCustomNavItem(
+            NavigationItem(
                 icon = Icons.Filled.AccountCircle,
                 label = "Profil",
                 isSelected = selectedItem == 2,
@@ -60,7 +60,7 @@ fun MyNavigation(selectedItem: Int, onItemSelected: (Int) -> Unit) {
 
 
 @Composable
-fun MyCustomNavItem(
+fun NavigationItem(
     icon: ImageVector,
     label: String,
     isSelected: Boolean,

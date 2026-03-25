@@ -1,4 +1,4 @@
-package fr.itii.models.objets
+package fr.itii.utils.objets
 
 data class ObjetUser(
     val name: String = "",

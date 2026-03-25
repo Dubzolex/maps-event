@@ -2,7 +2,7 @@ package fr.itii.backend.db
 
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
-import fr.itii.models.objets.ObjetUser
+import fr.itii.utils.objets.ObjetUser
 
 class Firestore {
 
@@ -16,10 +16,25 @@ class Firestore {
         "date" to "2026-03-20"
     )
 
+    fun update(ta)
+
+    fun get(table: String)
+
     // La syntaxe correcte : nom : Type
-    fun save(data: HashMap<String, String>) {
-        db.collection("users")
-            .add(data)
+    fun save(table: String, data: HashMap<String, String>) {
+        db.collection(table)
+            .document(data["id"].toString())
+
+
+
+
+            .delete()
+
+
+
+            .update(data)
+
+            .set(data)
             .addOnSuccessListener { documentReference ->
                 println("Document ajouté avec l'ID : ${documentReference.id}")
             }

@@ -1,6 +1,5 @@
-package fr.itii.models.maps
+package fr.itii.utils.maps
 
-import androidx.compose.ui.graphics.Color
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker

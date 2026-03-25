@@ -9,7 +9,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
 
 @Composable
-fun MyMaps() {
+fun Maps() {
     // 1. Définir la position initiale (ex: Rouen ou Paris)
     val rouen = LatLng(49.4431, 1.0993)
 

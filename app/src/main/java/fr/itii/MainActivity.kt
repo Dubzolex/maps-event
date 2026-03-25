@@ -16,9 +16,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import fr.itii.ui.theme.MyApplicationTheme
 
 import androidx.compose.runtime.*
-import fr.itii.ui.page.maps.MyMaps
-import fr.itii.ui.page.menu.MyNavigation
-import fr.itii.ui.page.profil.account.MyProfilAccount
+import fr.itii.ui.page.maps.Maps
+import fr.itii.ui.container.Navigation
+import fr.itii.ui.page.profil.MyProfilAccount
 import fr.itii.ui.page.search.MySearchable
 
 class MainActivity : ComponentActivity() {
@@ -41,7 +41,7 @@ fun MainApp() {
     Scaffold(
         bottomBar = {
             // On passe l'index et l'action de changement
-            MyNavigation(
+            Navigation(
                 selectedItem = selectedIndex,
                 onItemSelected = { num -> selectedIndex = num }
             )
@@ -50,9 +50,10 @@ fun MainApp() {
         // 2. Le conteneur qui change de contenu
         Box(modifier = Modifier.padding(innerPadding)) {
             when (selectedIndex) {
-                0 -> MyMaps()      // Si 0, on affiche la carte
+                0 -> Maps()      // Si 0, on affiche la carte
                 1 -> MySearchable()   // Si 1, on affiche la recherche
-                2 -> MyProfilAccount()  // Si 2, on affiche le profil
+                2 -> MyProfilAccount()
+                // Si 2, on affiche le profil
             }
         }
     }
