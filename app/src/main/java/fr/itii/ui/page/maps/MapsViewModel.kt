@@ -31,70 +31,61 @@ class MapsViewModel : ViewModel() {
 
         eventsList.clear()
 
-        eventsList.addAll(listOf(
-                    Events(
-                        id = "1",
-                        name = "Concert Rouen",
-                        date = "10/04/2026",
-                        type = "Concert",
-                        ville = "Rouen",
-                        adresse = "12 rue Victor Hugo",
-                        latitude = 49.4431,
-                        longitude = 1.0993,
-                        creator = "Mike"
-                    ),
-                    Events(
-                        id = "2",
-                        name = "Match de foot",
-                        date = "15/04/2026",
-                        type = "Sport",
-                        ville = "Rouen",
-                        adresse = "Stade municipal",
-                        latitude = 49.4500,
-                        longitude = 1.0800,
-                        creator = "Mike"
-                    ),
-                    Events(
-                        id = "3",
-                        name = "Pièce théâtre",
-                        date = "20/04/2026",
-                        type = "Théâtre",
-                        ville = "Rouen",
-                        adresse = "Centre ville",
-                        latitude = 49.4400,
-                        longitude = 1.1050,
-                        creator = "Mike"
-                    )
-                ))
+        eventsList.addAll(
+            listOf(
+                Events(
+                    id = "1",
+                    name = "Concert Rouen",
+                    date = "10/04/2026",
+                    type = "Concert",
+                    ville = "Rouen",
+                    adresse = "12 rue Victor Hugo",
+                    latitude = 49.4431,
+                    longitude = 1.0993,
+                    creator = "Mike"
+                ),
+                Events(
+                    id = "2",
+                    name = "Match de foot",
+                    date = "15/04/2026",
+                    type = "Sport",
+                    ville = "Rouen",
+                    adresse = "Stade municipal",
+                    latitude = 49.4500,
+                    longitude = 1.0800,
+                    creator = "Mike"
+                ),
+                Events(
+                    id = "3",
+                    name = "Pièce théâtre",
+                    date = "20/04/2026",
+                    type = "Théâtre",
+                    ville = "Rouen",
+                    adresse = "Centre ville",
+                    latitude = 49.4400,
+                    longitude = 1.1050,
+                    creator = "Mike"
+                )
+            )
+        )
+
+        // Dans ton MapsViewModel
+        db.collection("events").addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                Log.e("MapsViewModel", "Erreur : ${e.message}")
+                return@addSnapshotListener
             }
 
-
-
-
-
-
-
-
-
-
-        /*
-        db.collection("events")
-            .addSnapshotListener { snapshot, error ->
-                if (error != null) {
-                    Log.e("MapsViewModel", "Erreur Firestore : ", error)
-                    return@addSnapshotListener
-                }
-
-                if (snapshot != null) {
-                    // On vide la liste actuelle pour ne pas avoir de doublons
-                    eventsList.clear()
-
-                    // On convertit les documents en objets "Events"
+            if (snapshot != null) {
+                try {
                     val items = snapshot.toObjects(Events::class.java)
                     eventsList.addAll(items)
-
-                    Log.d("MapsViewModel", "${items.size} marqueurs chargés")
+                } catch (exception: Exception) {
+                    // Si ça plante encore, regarde ce log, il te dira exactement quel champ pose problème
+                    Log.e("MapsViewModel", "Erreur de conversion : ", exception)
                 }
-            }*/
+            }
+        }
     }
+}
 

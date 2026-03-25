@@ -1,8 +1,11 @@
 package fr.itii.utils.tables
 
 import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.firestore.DocumentId
+import com.google.firebase.firestore.Exclude
 
 data class Events(
+    @DocumentId val docId: String = "",
     val id: String = "",
     val name: String = "",
     val ville: String = "",
@@ -14,6 +17,7 @@ data class Events(
     val type: String = ""
 ) {
     // Cette propriété n'est pas stockée en base, elle sert uniquement à l'affichage
+    @get:Exclude
     val location: LatLng
         get() = LatLng(latitude, longitude)
 }
