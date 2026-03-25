@@ -49,7 +49,8 @@ class Authenticator {
     }
 
     // Cette fonction est maintenant redondante car tu as la propriété 'currentUser'
-    fun getCurrentUser(): FirebaseUser? {
-        return this.currentUser
-    }
+    /*fun getCurrentUser(): FirebaseUser? {
+        return null
+        //this.currentUser
+    }*/
 }

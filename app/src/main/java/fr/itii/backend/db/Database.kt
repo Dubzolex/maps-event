@@ -1,16 +1,16 @@
 package fr.itii.backend.db
 
-import fr.itii.utils.tables.TableEvent
-import fr.itii.utils.tables.TableUser
+import fr.itii.utils.tables.Events
+import fr.itii.utils.tables.Users
 import java.util.EventObject
 
 class Database {
 
-    fun getUserById(id: String) : TableUser {
-        return TableUser()
+    fun getUserById(id: String) : Users {
+        return Users()
     }
 
-    fun getUsers() : List<TableUser> {
+    fun getUsers() : List<Users> {
         return listOf()
     }
 
@@ -18,27 +18,23 @@ class Database {
         return listOf()
     }
 
-    fun getEventsByCity (city: String) : List<TableEvent> {
+    fun getEventsByCity (city: String) : List<Events> {
         return listOf()
     }
 
-    fun getEventsByDate (date: String) : List<TableEvent> {
+    fun getEventsByDate (date: String) : List<Events> {
         return listOf()
     }
 
-    fun getEventsByLocation (location: String) : List<TableEvent> {
+    fun getEventsByLocation (location: String) : List<Events> {
         return listOf()
     }
 
-    fun getEventsByCategory (category: String) : List<TableEvent> {
+    fun getEventsByCategory (category: String) : List<Events> {
         return listOf()
     }
 
-    fun getEventsByTags (tags: List<String>) : List<TableEvent> {
-        return listOf()
-    }
-
-    fun getCitiesByMinPopulation(minPopulation: Int) : List<CitiesObjet> {
+    fun getEventsByTags (tags: List<String>) : List<Events> {
         return listOf()
     }
 
@@ -46,7 +42,7 @@ class Database {
         return listOf()
     }
 
-)
+
 
 
 

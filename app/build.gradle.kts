@@ -69,6 +69,7 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
+
     // Google Maps pour Compose
     implementation("com.google.maps.android:maps-compose:4.3.3")
     // Services Google Play pour la localisation
@@ -84,4 +85,27 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.x.x"))
     // SDK Firebase Auth
     implementation("com.google.firebase:firebase-auth")
+    // Utilise une version précise (ex: 33.1.0)
+    implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
+
+    // Pour Firestore, plus besoin de mettre de version si tu utilises le BoM
+    // Et attention : le suffixe "-ktx" est devenu optionnel/obsolète dans les dernières versions
+    implementation("com.google.firebase:firebase-firestore")
+    implementation("com.google.firebase:firebase-auth")
+    // 1. Firebase BoM (Bill of Materials) - Gère les versions pour toi
+
+
+    // 2. Bibliothèques Firebase (pas besoin de versions grâce au BoM)
+    implementation("com.google.firebase:firebase-auth")      // Authentification
+    implementation("com.google.firebase:firebase-firestore") // Base de données
+
+    // 3. Google Maps pour Jetpack Compose
+    implementation("com.google.maps.android:maps-compose:4.4.1")
+    // Optionnel : Utilitaires Maps (Clustering, etc.)
+    implementation("com.google.maps.android:maps-compose-utils:4.4.1")
+    // Le SDK Google Maps de base
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+
+    // 4. Lifecycle & ViewModel pour Compose (Indispensable pour MapsViewModel)
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.2")
 }

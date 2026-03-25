@@ -4,7 +4,7 @@ import com.google.firebase.auth.FirebaseUser
 import fr.itii.backend.auth.Authenticator
 
 class API {
-
+/*
     fun login(email: String, password: String, onSuccess: () -> Unit, onError: (String) -> Unit) {
         var auth = Authenticator()
         return auth.login(email, password)
@@ -20,13 +20,13 @@ class API {
         return auth.logout()
     }
 
-    fun getUser(): {
+    fun getUser() {
 
         var auth = Authenticator()
         val user = auth.getCurrentUser()
 
-        val db = Database()
+        //val db = Database()
 
-        var account =
-    }
+        //var account =
+    }*/
 }

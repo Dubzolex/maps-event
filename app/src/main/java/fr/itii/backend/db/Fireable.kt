@@ -1,8 +1,8 @@
 package fr.itii.backend.db
 
-import fr.itii.utils.tables.TableCity
-import fr.itii.utils.tables.TableEvent
-import fr.itii.utils.tables.TableUser
+import fr.itii.utils.tables.Cities
+import fr.itii.utils.tables.Events
+import fr.itii.utils.tables.Users
 
 interface Fireable {
 
@@ -11,17 +11,17 @@ interface Fireable {
     fun get(table: String): HashMap<String, String>
     fun delete(table: String, data: HashMap<String, String>)
 
-    fun add(data: TableUser)
-    fun update(data: TableUser)
-    fun delete(data: TableUser)
+    fun add(data: Users)
+    fun update(data: Users)
+    fun delete(data: Users)
 
-    fun add(data: TableEvent)
-    fun update(data: TableEvent)
-    fun delete(data: TableEvent)
+    fun add(data: Events)
+    fun update(data: Events)
+    fun delete(data: Events)
 
-    fun add(data: TableCity)
-    fun addAll(data: List<TableCity>)
-    fun update(data: TableCity)
-    fun delete(data: TableCity)
+    fun add(data: Cities)
+    fun addAll(data: List<Cities>)
+    fun update(data: Cities)
+    fun delete(data: Cities)
 
 }

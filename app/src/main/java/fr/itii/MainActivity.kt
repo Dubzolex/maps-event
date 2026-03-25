@@ -16,10 +16,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import fr.itii.ui.theme.MyApplicationTheme
 
 import androidx.compose.runtime.*
+import androidx.lifecycle.viewmodel.compose.viewModel
 import fr.itii.ui.page.maps.Maps
 import fr.itii.ui.nav.Navigation
-import fr.itii.ui.page.profil.MyProfilAccount
-import fr.itii.ui.page.search.MySearchable
+import fr.itii.ui.page.maps.MapsViewModel
+import fr.itii.ui.page.profil.Account
+import fr.itii.ui.page.events.MySearchable
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +38,9 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainApp() {
     // 1. On garde l'index en mémoire ici (State Hoisting)
+
+    val mapsViewModel: MapsViewModel = viewModel()
+
     var selectedIndex by remember { mutableIntStateOf(0) }
 
     Scaffold(
@@ -50,16 +55,14 @@ fun MainApp() {
         // 2. Le conteneur qui change de contenu
         Box(modifier = Modifier.padding(innerPadding)) {
             when (selectedIndex) {
-                0 -> Maps()      // Si 0, on affiche la carte
+                0 -> Maps(viewModel = mapsViewModel)      // Si 0, on affiche la carte
                 1 -> MySearchable()   // Si 1, on affiche la recherche
-                2 -> MyProfilAccount()
+                2 -> Account()
                 // Si 2, on affiche le profil
             }
         }
     }
 }
-
-
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {

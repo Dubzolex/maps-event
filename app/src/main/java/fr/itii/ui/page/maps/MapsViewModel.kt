@@ -1,41 +1,100 @@
 package fr.itii.ui.page.maps
 
-import android.util.Log
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
+import fr.itii.utils.tables.Events
+
+
+import androidx.compose.runtime.mutableStateListOf
+import androidx.lifecycle.ViewModel
+import com.google.firebase.firestore.FirebaseFirestore
+import android.util.Log
+import androidx.compose.runtime.remember
 import com.google.firebase.Firebase
-import fr.itii.utils.tables.TableEvent
+import com.google.firebase.firestore.firestore
 
-class MapsViewModel {
+class MapsViewModel : ViewModel() {
 
-    // 1. L'état réactif de l'UI : Compose va écouter cette liste
-    // Nous stockons directement les TableEvent pour avoir toutes les infos
-    val eventsList = mutableStateListOf<TableEvent>()
+    private val db: FirebaseFirestore = Firebase.firestore
 
-
+    // Une liste réactive d'événements que Compose va observer
+    // Utiliser mutableStateListOf permet à Compose de détecter les ajouts/suppressions
+    val eventsList = mutableStateListOf<Events>()
 
     init {
-        // Au lancement du ViewModel, on commence à écouter
-        fetchEventsFromDatabase()
+        // On lance la récupération dès que le ViewModel est créé
+        loadEvents()
     }
 
-    private fun fetchEventsFromDatabase() {
-        // 2. Écouter Firestore en TEMPS RÉEL
-        db.collection("events") // Ou utiliser ton Enum: Table.EVENTS.nameTable
-            .addSnapshotListener { snapshot, e ->
-                if (e != null) {
-                    Log.w("MapViewModel", "Erreur lors de l'écoute", e)
+    private fun loadEvents() {
+        // On écoute la collection "events" (ou utilise ton Enum Table.EVENTS.nameTable)
+
+        eventsList.clear()
+
+        eventsList.addAll(listOf(
+                    Events(
+                        id = "1",
+                        name = "Concert Rouen",
+                        date = "10/04/2026",
+                        type = "Concert",
+                        ville = "Rouen",
+                        adresse = "12 rue Victor Hugo",
+                        latitude = 49.4431,
+                        longitude = 1.0993,
+                        creator = "Mike"
+                    ),
+                    Events(
+                        id = "2",
+                        name = "Match de foot",
+                        date = "15/04/2026",
+                        type = "Sport",
+                        ville = "Rouen",
+                        adresse = "Stade municipal",
+                        latitude = 49.4500,
+                        longitude = 1.0800,
+                        creator = "Mike"
+                    ),
+                    Events(
+                        id = "3",
+                        name = "Pièce théâtre",
+                        date = "20/04/2026",
+                        type = "Théâtre",
+                        ville = "Rouen",
+                        adresse = "Centre ville",
+                        latitude = 49.4400,
+                        longitude = 1.1050,
+                        creator = "Mike"
+                    )
+                ))
+            }
+
+
+
+
+
+
+
+
+
+
+        /*
+        db.collection("events")
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    Log.e("MapsViewModel", "Erreur Firestore : ", error)
                     return@addSnapshotListener
                 }
 
                 if (snapshot != null) {
-                    // 3. Convertir les documents Firestore en objets TableEvent
-                    val updatedEvents = snapshot.toObjects()
+                    // On vide la liste actuelle pour ne pas avoir de doublons
+                    eventsList.clear()
 
-                    // 4. Mettre à jour la liste réactive
-                    eventsList.clear() // On efface l'ancienne liste
-                    eventsList.addAll(updatedEvents) // On ajoute les nouveaux événements
-                    Log.d("MapViewModel", "${eventsList.size} événements chargés.")
+                    // On convertit les documents en objets "Events"
+                    val items = snapshot.toObjects(Events::class.java)
+                    eventsList.addAll(items)
+
+                    Log.d("MapsViewModel", "${items.size} marqueurs chargés")
                 }
-            }
+            }*/
     }
-}
+

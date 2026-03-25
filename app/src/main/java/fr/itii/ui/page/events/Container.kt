@@ -1,4 +1,4 @@
-package fr.itii.ui.container
+package fr.itii.ui.page.events
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,10 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import fr.itii.utils.tables.TableEvent
+import fr.itii.utils.tables.Events
 
 @Composable
-fun ContainerEvent(event: TableEvent) {
+fun ContainerEvent(event: Events) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
