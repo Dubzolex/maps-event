@@ -134,8 +134,8 @@ fun Maps(viewModel: MapsViewModel) {
         FloatingActionButton(
             onClick = { showCreateSheet = true },
             modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(end = 16.dp, bottom = 160.dp)
+                .align(Alignment.BottomStart)
+                .padding(start = 16.dp, bottom = 16.dp)
         ) {
             Icon(
                 imageVector = Icons.Default.Add,

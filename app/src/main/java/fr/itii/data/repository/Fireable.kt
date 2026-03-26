@@ -1,6 +1,5 @@
 package fr.itii.data.repository
 
-import fr.itii.domain.models.collections.Cities
 import fr.itii.domain.models.collections.Events
 import fr.itii.domain.models.collections.Users
 
@@ -19,9 +18,5 @@ interface Fireable {
     fun update(data: Events)
     fun delete(data: Events)
 
-    fun add(data: Cities)
-    fun addAll(data: List<Cities>)
-    fun update(data: Cities)
-    fun delete(data: Cities)
 
 }

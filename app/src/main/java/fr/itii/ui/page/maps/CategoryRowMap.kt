@@ -30,7 +30,7 @@ fun CategoryRowMap(
     ) {
         CategoryChip(
             label = "Domicile",
-            isSelected = selectedCategory == "Domicile",
+            isSelected = selectedCategory == "Concert",
             onClick = { onCategorySelected("Domicile") },
             icon = {
                 Icon(Icons.Default.Home, contentDescription = null)

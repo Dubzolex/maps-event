@@ -2,6 +2,7 @@ package fr.itii.ui.page.events
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -41,31 +42,42 @@ fun CreateEventSheet(
         FormField(label = "Ville", state = ville)
         FormField(label = "Adresse", state = adresse)
 
-        Button(
-            onClick = {
-                // Ici je mets une position aléatoire autour de Rouen juste pour tester
-                val newEvent = Events(
-                    id = Random.nextInt(1000, 9999).toString(),
-                    name = name.value,
-                    type = type.value,
-                    date = date.value,
-                    ville = ville.value,
-                    adresse = adresse.value,
-                    latitude = 49.4431 + Random.nextDouble(-0.03, 0.03),
-                    longitude = 1.0993 + Random.nextDouble(-0.03, 0.03),
-                    creator = "Utilisateur"
-                )
-
-                onCreateEvent(newEvent)
-                onClose()
-            }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp),
+            horizontalArrangement = Arrangement.Center
         ) {
-            Text("Créer")
+
+            Button(onClick = onClose) {
+                Text("Annuler")
+            }
+
+            Button(
+                onClick = {
+                    // Ici je mets une position aléatoire autour de Rouen juste pour tester
+                    val newEvent = Events(
+                        id = Random.nextInt(1000, 9999).toString(),
+                        name = name.value,
+                        type = type.value,
+                        date = date.value,
+                        ville = ville.value,
+                        adresse = adresse.value,
+                        latitude = 49.4431 + Random.nextDouble(-0.03, 0.03),
+                        longitude = 1.0993 + Random.nextDouble(-0.03, 0.03),
+                        creator = "Utilisateur"
+                    )
+
+                    onCreateEvent(newEvent)
+                    onClose()
+                }
+            ) {
+                Text("Créer")
+            }
         }
 
-        Button(onClick = onClose) {
-            Text("Annuler")
-        }
+
+
     }
 }
 
