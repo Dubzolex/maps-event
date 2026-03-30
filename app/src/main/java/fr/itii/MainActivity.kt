@@ -17,14 +17,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import fr.itii.data.remote.auth.Authenticator
+import fr.itii.data.remote.db.Database
 import fr.itii.domain.models.collections.Events
-import fr.itii.domain.models.collections.Users
 import fr.itii.ui.nav.Navigation
-import fr.itii.ui.page.events.EventDetails
-import fr.itii.ui.page.events.MySearchable
-import fr.itii.ui.page.maps.Maps
-import fr.itii.ui.page.maps.MapsViewModel
-import fr.itii.ui.page.profil.Profil
+import fr.itii.ui.events.sheets.EventDetails
+import fr.itii.ui.events.pages.MySearchable
+import fr.itii.ui.maps.pages.Maps
+import fr.itii.ui.maps.MapsViewModel
+import fr.itii.ui.profil.ProfilViewModel
+import fr.itii.ui.profil.UserRepository
+import fr.itii.ui.profil.pages.Account
+import fr.itii.ui.profil.pages.SignIn
+import fr.itii.ui.profil.pages.SignUp
 import fr.itii.ui.theme.MyApplicationTheme
 
 
@@ -49,8 +54,12 @@ fun MainApp() {
     var selectedIndex by remember { mutableIntStateOf(0) }
 
     // Gestion utilisateur très simple pour l'instant
-    var currentUser by remember { mutableStateOf<Users?>(null) }
-    val showSignUp = remember { mutableStateOf(false) }
+
+
+    val auth = remember { Authenticator() }
+    val db = remember { Database() }
+    val userRepo = remember { UserRepository(db, auth) }
+    val profilViewModel: ProfilViewModel = viewModel { ProfilViewModel(userRepo) }
 
     // Pour afficher un détail d'event depuis la page recherche
     var selectedSearchEvent by remember { mutableStateOf<Events?>(null) }
@@ -74,17 +83,13 @@ fun MainApp() {
                     }
                 )
 
-                2 -> Profil(
-                    currentUser = currentUser,
-                    showSignUp = showSignUp,
-                    onLoginSuccess = { user ->
-                        currentUser = user
-                    },
-                    onLogout = {
-                        currentUser = null
-                        showSignUp.value = false
+                2 -> {
+                    when(profilViewModel.currentScreen) {
+                        "SignIn" -> SignIn(viewModel = profilViewModel)
+                        "SignUp" -> SignUp(viewModel = profilViewModel)
+                        "Account" -> Account(viewModel = profilViewModel)
                     }
-                )
+                }
             }
         }
     }
@@ -94,7 +99,7 @@ fun MainApp() {
         ModalBottomSheet(
             onDismissRequest = { selectedSearchEvent = null }
         ) {
-            EventDetails(
+            DetailsEventSheet(
                 event = selectedSearchEvent!!,
                 onClose = { selectedSearchEvent = null }
             )

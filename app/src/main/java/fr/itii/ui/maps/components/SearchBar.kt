@@ -1,4 +1,4 @@
-package fr.itii.ui.page.maps
+package fr.itii.ui.maps.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -7,13 +7,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.CameraAlt
-import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -59,19 +55,7 @@ fun SearchBarMap(
                 singleLine = true
             )
         }
-
-        Icon(
-            imageVector = Icons.Default.Mic,
-            contentDescription = "Micro",
-            tint = Color.Black
-        )
-
-        Icon(
-            imageVector = Icons.Default.CameraAlt,
-            contentDescription = "Caméra",
-            tint = Color.Black
-        )
-
+/*
         Box(
             modifier = Modifier
                 .clip(CircleShape)
@@ -84,6 +68,6 @@ fun SearchBarMap(
                 contentDescription = "Profil",
                 tint = Color.White
             )
-        }
+        }*/
     }
 }

@@ -1,4 +1,4 @@
-package fr.itii.ui.page.maps
+package fr.itii.ui.maps.pages
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,8 +18,7 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
 import fr.itii.domain.models.collections.Events
-import fr.itii.ui.page.events.CreateEventSheet
-import fr.itii.ui.page.events.EventDetails
+
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -90,7 +89,7 @@ fun Maps(viewModel: MapsViewModel) {
                 onValueChange = { searchText = it }
             )
 
-            CategoryRowMap(
+            CategoryMap(
                 selectedCategory = selectedCategory,
                 onCategorySelected = { category ->
                     selectedCategory = category
@@ -105,10 +104,17 @@ fun Maps(viewModel: MapsViewModel) {
             )
         }
 
-        // Boutons à droite
-        RightMapButtons(
+        Column(
             modifier = Modifier
-                .align(Alignment.CenterEnd)
+                .align(Alignment.BottomStart)
+                .padding(bottom = 12.dp, start = 12.dp)
+        ) {
+
+        }
+        // Boutons à droite
+        TypeMap(
+            modifier = Modifier
+                .align(Alignment.CenterStart)
                 .padding(end = 12.dp),
             onToggleMapType = {
                 currentMapType = when (currentMapType) {
@@ -120,7 +126,7 @@ fun Maps(viewModel: MapsViewModel) {
         )
 
         // Bouton localisation
-        MyLocationButton(
+        Location(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(end = 16.dp, bottom = 90.dp),
@@ -135,7 +141,7 @@ fun Maps(viewModel: MapsViewModel) {
             onClick = { showCreateSheet = true },
             modifier = Modifier
                 .align(Alignment.BottomStart)
-                .padding(start = 16.dp, bottom = 16.dp)
+                .padding(start = 8.dp, bottom = 8.dp)
         ) {
             Icon(
                 imageVector = Icons.Default.Add,

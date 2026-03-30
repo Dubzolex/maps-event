@@ -1,4 +1,4 @@
-package fr.itii.ui.page.events
+package fr.itii.ui.events.sheets
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun FilterSheet(
+fun FilterEventSheet(
     selectedType: MutableState<String>,
     distanceKm: MutableFloatState,
     onApply: () -> Unit,

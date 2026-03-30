@@ -1,4 +1,4 @@
-package fr.itii.ui.page.events
+package fr.itii.ui.events.sheets
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,7 +14,7 @@ import fr.itii.domain.models.collections.Events
 
 
 @Composable
-fun EventDetails(
+fun DetailsEventSheet(
     event: Events,
     onClose: () -> Unit
 ) {

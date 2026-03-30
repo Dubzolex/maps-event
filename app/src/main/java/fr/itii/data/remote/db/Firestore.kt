@@ -52,9 +52,9 @@ class Firestore {
 
 
     // Fonction centrale (Add)
-    fun add(table: Table, doc: String, obj: FirestoreRepository) {
+    fun add(table: Table, doc: String, user: Users) {
         db.collection(table.toString()).document(doc)
-            .set(obj.toHashMap())
+            .set(user.toHashMap() as Map<String, Any>)
             .addOnSuccessListener {
                 println("Ajout réussi dans $table")
             }

@@ -1,4 +1,4 @@
-package fr.itii.ui.page.maps
+package fr.itii.ui.maps
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf

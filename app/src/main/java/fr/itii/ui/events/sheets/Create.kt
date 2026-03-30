@@ -1,4 +1,4 @@
-package fr.itii.ui.page.events
+package fr.itii.ui.events.sheets
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

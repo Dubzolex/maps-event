@@ -1,4 +1,4 @@
-package fr.itii.ui.page.events
+package fr.itii.ui.events.pages
 
 import android.os.Parcelable
 import androidx.compose.foundation.layout.Column
@@ -14,7 +14,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.FilterListOff
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Sort
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -23,8 +22,6 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableFloatState
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -34,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import fr.itii.domain.models.collections.Events
+import fr.itii.ui.events.sheets.FilterEventSheet
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -128,8 +126,8 @@ fun MySearchable(eventsList: Parcelable, onEventClick: Function<Unit>) {
             ModalBottomSheet(
                 onDismissRequest = { showFilterSheet = true }
             ) {
-                FilterSheet(
-                    selectedType = typeState ,
+                FilterEventSheet(
+                    selectedType = typeState,
                     distanceKm = distanceState,
 
                     onApply = {},

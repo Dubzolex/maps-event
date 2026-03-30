@@ -1,4 +1,4 @@
-package fr.itii.ui.page.maps
+package fr.itii.ui.maps.components
 
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
