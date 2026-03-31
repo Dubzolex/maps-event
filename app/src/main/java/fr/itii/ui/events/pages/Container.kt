@@ -30,8 +30,13 @@ fun ContainerEvent(
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = event.name,
+                text = "Nom: ${event.name}",
                 style = MaterialTheme.typography.titleLarge
+            )
+
+            Text(
+                text = "Description : ${event.description}",
+                style = MaterialTheme.typography.bodyMedium
             )
 
             Text(
@@ -50,9 +55,10 @@ fun ContainerEvent(
             )
 
             Text(
-                text = "Créé par : ${event.creator}",
+                text = "Latitude : ${event.latitude} - Longitude : ${event.longitude}",
                 style = MaterialTheme.typography.bodySmall
             )
+
         }
     }
 }

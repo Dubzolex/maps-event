@@ -19,8 +19,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import fr.itii.ui.components.ActionButton
 import fr.itii.ui.profil.UserViewModel
-import fr.itii.ui.components.ButtonAction
 
 
 @Composable
@@ -66,7 +66,7 @@ fun Account(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        ButtonAction(
+        ActionButton(
             text = "Se déconnecter",
             onClick = { viewModel.logout() }
         )

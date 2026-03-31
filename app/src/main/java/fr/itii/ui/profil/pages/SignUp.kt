@@ -19,10 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import fr.itii.domain.models.collections.Users
+import fr.itii.ui.components.ActionButton
 import fr.itii.ui.profil.UserViewModel
-import fr.itii.ui.components.ButtonAction
-import fr.itii.ui.components.ButtonNeutral
-import fr.itii.ui.components.InputField
+import fr.itii.ui.components.NeutralButton
+import fr.itii.ui.components.PasswordField
+import fr.itii.ui.components.UserField
 
 
 @Composable
@@ -40,7 +41,7 @@ fun SignUp(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(20.dp),
+            .padding(10.dp),
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -59,23 +60,23 @@ fun SignUp(
             Column(
                 verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
-                InputField("Nom", name, onValueChange = { name = it })
-                InputField("Date de naissance", date, onValueChange = { date = it })
-                InputField("Ville", city, onValueChange = { city = it })
-                InputField("Adresse", address, onValueChange = { address = it })
+                UserField("Nom", name, onValueChange = { name = it })
+                UserField("Date de naissance", date, onValueChange = { date = it })
+                UserField("Ville", city, onValueChange = { city = it })
+                UserField("Adresse", address, onValueChange = { address = it })
             }
         }
 
-            item {
+        item {
 
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(6.dp)
-                ) {
-                    InputField("Email", email, onValueChange = { email = it })
-                    InputField("Mot de passe", password, onValueChange = { password = it })
-                }
-
+            Column(
+                verticalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+                UserField("Email", email, onValueChange = { email = it })
+                PasswordField("Mot de passe", password, onValueChange = { password = it })
             }
+
+        }
 
         item {
             // Utilisation d'une Row pour les boutons
@@ -85,13 +86,13 @@ fun SignUp(
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 // Un bouton plus simple pour le retour
-                ButtonNeutral(
+                NeutralButton(
                     text = "Retour",
                     onClick = { viewModel.currentScreen = "SignIn" }
                 )
 
                 // Utilisation de ton ButtonAction optimisé
-                ButtonAction(
+                ActionButton(
                     text = "S'inscrire",
                     onClick = {
                         val newUser = Users(

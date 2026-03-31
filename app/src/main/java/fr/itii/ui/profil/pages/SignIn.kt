@@ -14,10 +14,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import fr.itii.ui.components.ActionButton
+import fr.itii.ui.components.LinkButton
+import fr.itii.ui.components.PasswordField
 import fr.itii.ui.profil.UserViewModel
-import fr.itii.ui.components.ButtonAction
-import fr.itii.ui.components.ButtonLink
-import fr.itii.ui.components.InputField
+import fr.itii.ui.components.UserField
 
 
 @Composable
@@ -45,8 +46,8 @@ fun SignIn(
                 .padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            InputField("Email", email, onValueChange = { email = it })
-            InputField("Mot de passe", password, onValueChange = { password = it })
+            UserField("Email", email, onValueChange = { email = it })
+            PasswordField("Mot de passe", password, onValueChange = { password = it })
         }
 
 
@@ -58,12 +59,12 @@ fun SignIn(
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
 
-            ButtonLink(
+            LinkButton(
                 text = "Créer un compte",
                 onClick = { viewModel.currentScreen = "SignUp" }
             );
 
-            ButtonAction(
+            ActionButton(
                 text = "Se connecter",
                 onClick = { viewModel.signIn(email, password) }
             )
