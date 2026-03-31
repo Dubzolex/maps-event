@@ -7,31 +7,23 @@ import androidx.lifecycle.ViewModel
 import fr.itii.domain.models.collections.Users
 import kotlinx.coroutines.flow.StateFlow
 
-class ProfileViewModel(private val repository: UserRepository) : ViewModel() {
-    // On récupère le flux de l'utilisateur depuis le repo
-    val userProfile: StateFlow<Users?> = repository.userProfile
+class UserViewModel(private val repository: UserRepository) : ViewModel() {
 
-    // État pour afficher les messages (erreurs ou succès)
+    val user: StateFlow<Users?> = repository.userProfile
+
     var uiMessage by mutableStateOf<String?>(null)
-        private set
+    private set
 
-    // État pour la navigation simple (Login, SignUp, Account)
-    var currentScreen by mutableStateOf("SignIn")
-
-    init {
-        // Au démarrage, on vérifie si un utilisateur est déjà là
-        if (repository.currentUser != null) {
-            repository.get()
-            currentScreen = "Account"
-        }
-    }
+    // On initialise l'écran selon la présence d'un utilisateur
+    var currentScreen by mutableStateOf(
+        if (repository.currentUser != null) "Account" else "SignIn"
+    )
 
     fun signUp(user: Users) {
-        // On prépare l'objet complet
         repository.signUp(user) { success, message ->
             uiMessage = message
             if (success) {
-                // On pourrait aussi ajouter la ville ici via un update si besoin
+                // Pas besoin de fetch manuel, le Flow du repo va s'actualiser
                 currentScreen = "Account"
             }
         }
@@ -41,7 +33,6 @@ class ProfileViewModel(private val repository: UserRepository) : ViewModel() {
         repository.signIn(email, password) { success, message ->
             uiMessage = message
             if (success) {
-                repository.get()
                 currentScreen = "Account"
             }
         }
@@ -49,11 +40,16 @@ class ProfileViewModel(private val repository: UserRepository) : ViewModel() {
 
     fun logout() {
         repository.logout()
-        currentScreen = "SignUp"
+        // Le repo va mettre userProfile à null, l'UI réagira via le StateFlow
+        currentScreen = "SignIn"
     }
 
     fun update(user: Users) {
-        repository.update(user)
+        // Simple et efficace : le repo met à jour Firestore,
+        // le snapshotListener renvoie la modif, le StateFlow se met à jour, l'UI change.
+        repository.update(user) { success, message ->
+                uiMessage = message
+        }
     }
 
     fun clearMessage() { uiMessage = null }

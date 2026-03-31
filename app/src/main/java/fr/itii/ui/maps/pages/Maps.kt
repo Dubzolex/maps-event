@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
@@ -30,34 +31,11 @@ import fr.itii.ui.maps.components.TypeMap
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Maps(viewModel: MapsViewModel) {
-    val homePosition = LatLng(49.4431, 1.0993)
 
-    var selectedEvent by remember { mutableStateOf<Events?>(null) }
-    var showCreateSheet by remember { mutableStateOf(false) }
-    var searchText by remember { mutableStateOf("") }
-    var selectedCategory by remember { mutableStateOf("Tout") }
-    var currentMapType by remember { mutableStateOf(MapType.NORMAL) }
+    val events by viewModel.filteredEvents.collectAsState()
 
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(homePosition, 13f)
-    }
-
-    // Filtre des événements
-    val filteredEvents = viewModel.eventsList.filter { event ->
-        val matchesSearch =
-            event.name.contains(searchText, ignoreCase = true) ||
-                    event.ville.contains(searchText, ignoreCase = true) ||
-                    event.adresse.contains(searchText, ignoreCase = true)
-
-        val matchesCategory = when (selectedCategory) {
-            "Tout" -> true
-            "Domicile" -> true // Ici on garde tout, et le bouton recentre juste la map
-            "Restaurants" -> event.type.equals("Restaurant", ignoreCase = true)
-            "Parcs" -> event.type.equals("Parc", ignoreCase = true)
-            else -> true
-        }
-
-        matchesSearch && matchesCategory
+        position = CameraPosition.fromLatLngZoom(viewModel.homePosition, 13f)
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -68,16 +46,15 @@ fun Maps(viewModel: MapsViewModel) {
             cameraPositionState = cameraPositionState,
             properties = MapProperties(
                 isMyLocationEnabled = false,
-                mapType = currentMapType
+                mapType = viewModel.currentMapType
             )
         ) {
-            filteredEvents.forEach { event ->
+            events.forEach { event ->
                 Marker(
                     state = MarkerState(position = event.location),
                     title = event.name,
-                    snippet = "${event.ville} - ${event.date}",
                     onClick = {
-                        selectedEvent = event
+                        viewModel.selectedEvent = event
                         true
                     }
                 )
@@ -91,20 +68,14 @@ fun Maps(viewModel: MapsViewModel) {
                 .padding(top = 12.dp, start = 12.dp, end = 12.dp)
         ) {
             SearchBarMap(
-                value = searchText,
-                onValueChange = { searchText = it }
+                value = viewModel.searchText,
+                onValueChange = { viewModel.searchText = it }
             )
 
             CategoryMap(
-                selectedCategory = selectedCategory,
+                selectedCategory = viewModel.selectedCategory,
                 onCategorySelected = { category ->
-                    selectedCategory = category
-
-                    // Action spéciale "Domicile" : recentre la caméra
-                    if (category == "Domicile") {
-                        cameraPositionState.position =
-                            CameraPosition.fromLatLngZoom(homePosition, 15f)
-                    }
+                    viewModel.selectedCategory = category
                 },
                 modifier = Modifier.padding(top = 10.dp)
             )
@@ -119,66 +90,41 @@ fun Maps(viewModel: MapsViewModel) {
         }
         // Boutons à droite
         TypeMap(
-            modifier = Modifier
-                .align(Alignment.CenterStart)
-                .padding(end = 12.dp),
-            onToggleMapType = {
-                currentMapType = when (currentMapType) {
-                    MapType.NORMAL -> MapType.SATELLITE
-                    MapType.SATELLITE -> MapType.TERRAIN
-                    else -> MapType.NORMAL
-                }
-            }
+            modifier = Modifier.align(Alignment.BottomEnd).padding(end = 10.dp, bottom = 180.dp),
+            onToggleMapType = { viewModel.toggleMapType() }
         )
 
         // Bouton localisation
         LocationMap(
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(end = 16.dp, bottom = 90.dp),
+            modifier = Modifier.align(Alignment.BottomEnd).padding(end = 10.dp, bottom = 110.dp),
             onClick = {
-                cameraPositionState.position =
-                    CameraPosition.fromLatLngZoom(homePosition, 15f)
+                cameraPositionState.move(CameraUpdateFactory.newLatLngZoom(viewModel.homePosition, 15f))
             }
         )
 
         // Bouton ajout d'event
         FloatingActionButton(
-            onClick = { showCreateSheet = true },
-            modifier = Modifier
-                .align(Alignment.BottomStart)
-                .padding(start = 8.dp, bottom = 8.dp)
+            onClick = { viewModel.showCreateSheet = true },
+            modifier = Modifier.align(Alignment.BottomStart).padding(start = 10.dp, bottom = 10.dp)
         ) {
-            Icon(
-                imageVector = Icons.Default.Add,
-                contentDescription = "Créer un événement"
-            )
+            Icon(Icons.Default.Add, "Créer")
         }
     }
 
     // Bottom sheet création
-    if (showCreateSheet) {
-        ModalBottomSheet(
-            onDismissRequest = { showCreateSheet = false }
-        ) {
+    if (viewModel.showCreateSheet) {
+        ModalBottomSheet(onDismissRequest = { viewModel.showCreateSheet = false }) {
             CreateEventSheet(
-                onCreateEvent = { event ->
-                    viewModel.addEvent(event)
-                },
-                onClose = { showCreateSheet = false }
+                onCreate = { viewModel.addEvent(it) },
+                onClose = { viewModel.showCreateSheet = false }
             )
         }
     }
 
     // Bottom sheet détail
-    if (selectedEvent != null) {
-        ModalBottomSheet(
-            onDismissRequest = { selectedEvent = null }
-        ) {
-            DetailsEventSheet(
-                event = selectedEvent!!,
-                onClose = { selectedEvent = null }
-            )
+    viewModel.selectedEvent?.let { event ->
+        ModalBottomSheet(onDismissRequest = { viewModel.selectedEvent = null }) {
+            DetailsEventSheet(event = event, onClose = { viewModel.selectedEvent = null })
         }
     }
 }

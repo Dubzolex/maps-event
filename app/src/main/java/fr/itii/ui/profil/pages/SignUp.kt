@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import fr.itii.domain.models.collections.Users
-import fr.itii.ui.profil.ProfileViewModel
+import fr.itii.ui.profil.UserViewModel
 import fr.itii.ui.components.ButtonAction
 import fr.itii.ui.components.ButtonNeutral
 import fr.itii.ui.components.InputField
@@ -27,7 +27,7 @@ import fr.itii.ui.components.InputField
 
 @Composable
 fun SignUp(
-    viewModel: ProfileViewModel
+    viewModel: UserViewModel
 ) {
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
@@ -40,8 +40,8 @@ fun SignUp(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 20.dp),
-        verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterVertically),
+            .padding(20.dp),
+        verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 

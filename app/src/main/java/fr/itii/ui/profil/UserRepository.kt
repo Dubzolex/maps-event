@@ -5,299 +5,118 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.firestore
-import fr.itii.data.remote.auth.Authenticator
-import fr.itii.data.remote.db.Database
-import fr.itii.data.remote.db.FirestoreRepository
+
 import fr.itii.domain.models.collections.Users
 import fr.itii.domain.models.enums.Table
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
+
 class UserRepository() {
 
-    val auth =
+    private val auth = FirebaseAuth.getInstance()
+    private val db = Firebase.firestore
+
+    // StateFlow pour exposer les données utilisateur en temps réel
+    private val userProfileStat = MutableStateFlow<Users?>(null)
+    val userProfile: StateFlow<Users?> = userProfileStat
 
     val currentUser: FirebaseUser?
         get() = auth.currentUser
 
-    val userProfile = MutableStateFlow<Users?>(null)
+
+    init {
+        // Si l'utilisateur est déjà loggé au démarrage, on lance l'écoute
+        auth.currentUser?.uid?.let { startUserObserver(it) }
+    }
+
+    private fun startUserObserver(uid: String) {
+        db.collection(Table.USER.value).document(uid).addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                Log.e("REPO", "Erreur écoute utilisateur", e)
+                return@addSnapshotListener
+            }
+            userProfileStat.value = snapshot?.toObject(Users::class.java)
+        }
+    }
+
+    // --- ACTIONS ---
 
     fun signUp(user: Users, onResult: (Boolean, String?) -> Unit) {
-        private val auth = FirebaseAuth.getInstance()
+        if (auth.currentUser != null) {
+            onResult(true, "Déjà connecté.")
+            return
+        }
 
-        val currentUser: FirebaseUser?
-        get() = auth.currentUser
+        if (user.email.isEmpty() || user.password.isEmpty()) {
+            onResult(false, "Veuillez remplir tous les champs.")
+            return
+        }
 
-        fun signUp(email: String, password: String, onResult: (Boolean, String?) -> Unit) {
-            if (this.currentUser != null) {
-                Log.w("AUTH", "Utilisateur déjà connecté : ${currentUser?.email}")
-                onResult(true, "Déjà connecté.")
-                return
-            }
+        auth.createUserWithEmailAndPassword(user.email, user.password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val uid = auth.currentUser?.uid ?: ""
+                    user.docId = uid
 
-            auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Log.i("AUTH", "Utilisateur créé : ${currentUser?.email}")
-                        onResult(true, "Compte créé avec succès.")
-                    } else {
-                        Log.w("AUTH", "Erreur d'inscription", task.exception)
-                        onResult(false, task.exception?.localizedMessage)
+                    // On enregistre dans Firestore
+                    add(uid, user) { success, message ->
+                        if (success) {
+                            startUserObserver(uid) // On commence à écouter
+                            onResult(true, "Inscription réussie.")
+                        } else {
+                            onResult(false, message)
+                        }
                     }
+                } else {
+                    onResult(false, task.exception?.localizedMessage)
                 }
-        }
-
-        fun signIn(email: String, password: String,  onResult: (Boolean, String?) -> Unit) {
-            if (this.currentUser != null) {
-                Log.i("AUTH", "Utilisateur déjà connecté : ${currentUser?.email}")
-                onResult(true, "Déjà connecté.")
-                return
             }
-
-            auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Log.i("AUTH", "Utilisateur connecté : ${currentUser?.email}")
-                        onResult(true, "Utilisateur connecté.")
-                    } else {
-                        Log.w("AUTH", "Erreur de connexion", task.exception)
-                        onResult(false, "Erreur de connexion.")
-                    }
-                }
-        }
-
-        fun logout(onResult: (Boolean, String?) -> Unit) {
-            try {
-                auth.signOut()
-                Log.i("AUTH", "Utilisateur déconnecté")
-                onResult(true, "Utilisateur déconnecté.")
-            } catch (e: Exception) {
-                Log.w("AUTH", "Erreur de déconnexion", e)
-                onResult(false, e.localizedMessage)
-            }
-        }
-
-        fun getUid(): String = auth.currentUser?.uid ?: ""
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        auth.signUp(user.email, user.password as String) { success, error ->
-            if (success) {
-                val uid = auth.getUid()
-                user.docId = uid
-
-                // On utilise ta classe Database pour enregistrer
-                db.addUser(user) { isSaved ->
-                    if (isSaved) {
-                        userProfile.value = user
-                        onResult(true, null)
-                    } else {
-                        onResult(false, "Erreur lors de la création du profil Firestore")
-                    }
-                }
-            } else {
-                onResult(false, error)
-            }
-        }
     }
 
     fun signIn(email: String, password: String, onResult: (Boolean, String?) -> Unit) {
-        auth.signIn(email, password as String) { success, error ->
-            if (success) {
-                get()
-
-            } else {
-                onResult(false, error)
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val uid = auth.currentUser?.uid ?: ""
+                    startUserObserver(uid)
+                    onResult(true, "Connecté.")
+                } else {
+                    onResult(false, "Erreur : ${task.exception?.localizedMessage}")
+                }
             }
-        }
-    }
-
-    fun get() {
-        val uid = auth.getUid()
-        if (uid.isNotEmpty()) {
-            db.getUser(uid) { user ->
-                userProfile.value = user
-            }
-        }
-    }
-
-    fun update(user: Users) {
-        db.updateUser(user) { success ->
-            if (success) {
-                userProfile.value = user
-            } else {
-                // Gérer l'erreur de mise à jour
-            }
-        }
     }
 
     fun logout() {
-        auth.logout({ success, error ->
-            if (success) {
-                userProfile.value = null
-            } else {
-                // Gérer l'erreur de déconnexion
-            }
-        })
+        auth.signOut()
+        userProfileStat.value = null
     }
 
+    // Base de données FIRESTORE
 
-
-
-
-
-
-
-
-    // Interface commun
-
-    val db = Firebase.firestore
-
-    // Objet User
-    data class Users(
-        val id: String = "",
-        val name: String = "",
-        val email: String = ""
-    ) : FirestoreRepository {
-        override fun toHashMap(): HashMap<String, Any?> {
-            return hashMapOf(
-                "id" to id,
-                "name" to name,
-                "email" to email
-            )
-        }
-    }
-
-    //Objet Event
-    data class Events(
-        val id: String = "",
-        val name: String = "",
-        val city: String = "",
-        val date: String = "", // Idéalement, utilise un Timestamp Firebase ici
-        val address: String = "",
-        val type: String = "",
-        val description: String = ""
-    ) : FirestoreRepository {
-        override fun toHashMap(): HashMap<String, Any?> {
-            return hashMapOf(
-                "id" to id,
-                "name" to name,
-                "city" to city,
-                "date" to date,
-                "address" to address,
-                "type" to type,
-                "description" to description
-            )
-        }
-    }
-
-
-    // Fonction centrale (Add)
-    fun add(table: Table, doc: String, user: Users) {
-        db.collection(table.toString()).document(doc)
-            .set(user.toHashMap() as Map<String, Any>)
+    fun add(doc: String, user: Users, onResult: (Boolean, String?) -> Unit) {
+        db.collection(Table.USER.value).document(doc)
+            .set(user)
             .addOnSuccessListener {
-                println("Ajout réussi dans $table")
+                onResult(true, "Succès")
             }
             .addOnFailureListener { e ->
-                println("Erreur : $e")
+                Log.e("REPO USER", "Erreur add", e)
+                onResult(false, "Erreur lors de la mise à jour : ${e.localizedMessage}")
             }
     }
 
-    // Fonction centrale (update)
-    fun update(table: Table, doc: String, obj: FirestoreRepository) {
-        db.collection(table.nameTable).document(doc)
-            .update(obj.toHashMap() as Map<String, Any>)
+    fun update(user: Users, onResult: (Boolean, String?) -> Unit) {
+        val uid = auth.currentUser?.uid ?: return
+
+        db.collection(Table.USER.value).document(uid)
+            .set(user)
             .addOnSuccessListener {
-                println("Update réussi dans $table")
+                onResult(true, "Profil mis à jour !")
             }
             .addOnFailureListener { e ->
-                println("Erreur update : $e")
-            }
-    }
-
-    // Fonction centrale (Delate)
-    fun delete(table: Table, doc: String) {
-        db.collection(table.nameTable).document(doc)
-            .delete()
-            .addOnSuccessListener {
-                println("Suppression réussie dans $table")
-            }
-            .addOnFailureListener { e ->
-                println("Erreur suppression : $e")
-            }
-    }
-
-    //  GET UN DOCUMENT
-    fun get(table: Table, doc: String, onResult: (Map<String, Any>?) -> Unit) {
-        db.collection(table.nameTable).document(doc)
-            .get()
-            .addOnSuccessListener { document ->
-                if (document.exists()) {
-                    onResult(document.data)
-                } else {
-                    onResult(null)
-                }
-            }
-            .addOnFailureListener {
-                onResult(null)
-            }
-    }
-
-    // GET TOUS LES DOCUMENTS
-    fun getAll(table: Table, onResult: (List<Map<String, Any>>) -> Unit) {
-        db.collection(table.name)
-            .get()
-            .addOnSuccessListener { result ->
-                val list = mutableListOf<Map<String, Any>>()
-
-                for (doc in result) {
-                    doc.data?.let { list.add(it) }
-                }
-
-                onResult(list)
-            }
-            .addOnFailureListener {
-                onResult(emptyList())
+                Log.e("REPO USER", "Erreur update", e)
+                onResult(false, "Erreur lors de la mise à jour : ${e.localizedMessage}")
             }
     }
 }

@@ -19,7 +19,7 @@ import kotlin.random.Random
 
 @Composable
 fun CreateEventSheet(
-    onCreateEvent: (Events) -> Unit,
+    onCreate: (Events) -> Unit,
     onClose: () -> Unit
 ) {
     val name = remember { mutableStateOf("") }
@@ -68,7 +68,7 @@ fun CreateEventSheet(
                         creator = "Utilisateur"
                     )
 
-                    onCreateEvent(newEvent)
+                    onCreate(newEvent)
                     onClose()
                 }
             ) {

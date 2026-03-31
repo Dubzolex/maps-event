@@ -25,7 +25,7 @@ fun LocationMap(
             .clip(CircleShape)
             .background(Color.White)
             .clickable { onClick() }
-            .padding(16.dp),
+            .padding(14.dp),
         contentAlignment = Alignment.Center
     ) {
         Icon(

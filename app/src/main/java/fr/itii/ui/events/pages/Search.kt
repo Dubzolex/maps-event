@@ -31,12 +31,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import fr.itii.domain.models.collections.Events
+import fr.itii.ui.events.EventViewModel
 import fr.itii.ui.events.sheets.FilterEventSheet
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MySearchable(eventsList: Parcelable, onEventClick: Function<Unit>) {
+fun Search(viewModel: EventViewModel) {
     // État pour le texte de recherche
     var searchQuery by remember { mutableStateOf("") }
 
