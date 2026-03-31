@@ -21,11 +21,11 @@ import fr.itii.data.remote.auth.Authenticator
 import fr.itii.data.remote.db.Database
 import fr.itii.domain.models.collections.Events
 import fr.itii.ui.nav.Navigation
-import fr.itii.ui.events.sheets.EventDetails
 import fr.itii.ui.events.pages.MySearchable
+import fr.itii.ui.events.sheets.DetailsEventSheet
 import fr.itii.ui.maps.pages.Maps
 import fr.itii.ui.maps.MapsViewModel
-import fr.itii.ui.profil.ProfilViewModel
+import fr.itii.ui.profil.ProfileViewModel
 import fr.itii.ui.profil.UserRepository
 import fr.itii.ui.profil.pages.Account
 import fr.itii.ui.profil.pages.SignIn
@@ -59,7 +59,7 @@ fun MainApp() {
     val auth = remember { Authenticator() }
     val db = remember { Database() }
     val userRepo = remember { UserRepository(db, auth) }
-    val profilViewModel: ProfilViewModel = viewModel { ProfilViewModel(userRepo) }
+    val profilViewModel: ProfileViewModel = viewModel { ProfileViewModel(userRepo) }
 
     // Pour afficher un détail d'event depuis la page recherche
     var selectedSearchEvent by remember { mutableStateOf<Events?>(null) }

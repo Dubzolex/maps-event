@@ -16,14 +16,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import fr.itii.ui.profil.ProfilViewModel
+import fr.itii.ui.profil.ProfileViewModel
 import fr.itii.ui.components.ButtonAction
 import androidx.compose.runtime.collectAsState
 
 
 @Composable
 fun Account(
-    viewModel: ProfilViewModel
+    viewModel: ProfileViewModel
 ) {
     val user = viewModel.userProfile.collectAsState().value
 

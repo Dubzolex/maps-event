@@ -18,7 +18,13 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
 import fr.itii.domain.models.collections.Events
-
+import fr.itii.ui.events.sheets.CreateEventSheet
+import fr.itii.ui.events.sheets.DetailsEventSheet
+import fr.itii.ui.maps.MapsViewModel
+import fr.itii.ui.maps.components.CategoryMap
+import fr.itii.ui.maps.components.LocationMap
+import fr.itii.ui.maps.components.SearchBarMap
+import fr.itii.ui.maps.components.TypeMap
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -126,7 +132,7 @@ fun Maps(viewModel: MapsViewModel) {
         )
 
         // Bouton localisation
-        Location(
+        LocationMap(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(end = 16.dp, bottom = 90.dp),
@@ -169,7 +175,7 @@ fun Maps(viewModel: MapsViewModel) {
         ModalBottomSheet(
             onDismissRequest = { selectedEvent = null }
         ) {
-            EventDetails(
+            DetailsEventSheet(
                 event = selectedEvent!!,
                 onClose = { selectedEvent = null }
             )

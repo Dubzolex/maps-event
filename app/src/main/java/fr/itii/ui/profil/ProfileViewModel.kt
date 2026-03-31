@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import fr.itii.domain.models.collections.Users
 import kotlinx.coroutines.flow.StateFlow
 
-class ProfilViewModel(private val repository: UserRepository) : ViewModel() {
+class ProfileViewModel(private val repository: UserRepository) : ViewModel() {
     // On récupère le flux de l'utilisateur depuis le repo
     val userProfile: StateFlow<Users?> = repository.userProfile
 

@@ -14,7 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import fr.itii.ui.profil.ProfilViewModel
+import fr.itii.ui.profil.ProfileViewModel
 import fr.itii.ui.components.ButtonAction
 import fr.itii.ui.components.ButtonLink
 import fr.itii.ui.components.InputField
@@ -22,7 +22,7 @@ import fr.itii.ui.components.InputField
 
 @Composable
 fun SignIn(
-    viewModel: ProfilViewModel
+    viewModel: ProfileViewModel
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }

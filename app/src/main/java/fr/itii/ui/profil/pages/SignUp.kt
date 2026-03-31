@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import fr.itii.domain.models.collections.Users
-import fr.itii.ui.profil.ProfilViewModel
+import fr.itii.ui.profil.ProfileViewModel
 import fr.itii.ui.components.ButtonAction
 import fr.itii.ui.components.ButtonNeutral
 import fr.itii.ui.components.InputField
@@ -27,7 +27,7 @@ import fr.itii.ui.components.InputField
 
 @Composable
 fun SignUp(
-    viewModel: ProfilViewModel
+    viewModel: ProfileViewModel
 ) {
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
@@ -94,7 +94,14 @@ fun SignUp(
                 ButtonAction(
                     text = "S'inscrire",
                     onClick = {
-                        val newUser = Users(name, email, password, date, city, address)
+                        val newUser = Users(
+                            "",
+                            name,
+                            email,
+                            password,
+                            date,
+                            city,
+                            address)
                         viewModel.signUp(newUser)
                     }
                 )
