@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.NavigationBar
@@ -31,8 +32,8 @@ fun Navigation(
             )
 
             NavigationItem(
-                icon = Icons.Filled.Search,
-                label = "Search",
+                icon = Icons.Filled.Event,
+                label = "Events",
                 isSelected = selectedItem == 1,
                 onClick = { onItemSelected(1) }
             )

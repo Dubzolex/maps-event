@@ -1,6 +1,6 @@
 package fr.itii.ui.events.pages
 
-import android.os.Parcelable
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.FilterListOff
@@ -22,74 +24,39 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import fr.itii.domain.models.collections.Events
 import fr.itii.ui.events.EventViewModel
+import fr.itii.ui.events.sheets.DetailsEventSheet
 import fr.itii.ui.events.sheets.FilterEventSheet
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Search(viewModel: EventViewModel) {
-    // État pour le texte de recherche
-    var searchQuery by remember { mutableStateOf("") }
 
-    var showFilterSheet by remember { mutableStateOf(false) }
+    val events by viewModel.filteredEvents.collectAsState()
 
-    var filterActive by remember { mutableStateOf(false) }
-
-    val typeState = remember { mutableStateOf("") }
-    val distanceState = remember { mutableFloatStateOf(0f) }
-
-    // Génération d'une liste factice de 10 événements
-    val eventsList = List(10) { i ->
-        Events(
-            name = "Événement $i",
-            ville = "Rouen",
-            date = "$i/03/2026",
-            adresse = "$i Rue de la République"
-        )
-    }
-
-
-
-
-    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .padding(16.dp)) {
         // --- BARRE DE RECHERCHE ---
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            OutlinedTextField(
-                value = searchQuery,
-                onValueChange = { searchQuery = it },
-                modifier = Modifier.weight(1f),
-                label = { Text("Rechercher un événement") },
-                placeholder = { Text("Ex: Concert...") },
-                singleLine = true
-            )
-
-            IconButton(
-                onClick = { /* Action de recherche ici */ },
-                modifier = Modifier.padding(start = 8.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = "Loupe",
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            }
-
-            if(filterActive) {
+            if(viewModel.isFilter) {
                 IconButton(
-                    onClick = { showFilterSheet = true },
+                    onClick = {
+                        viewModel.typeState = "Tout"
+                        viewModel.distanceState = 0f
+                        viewModel.isFilter = false
+                        viewModel.onApplyFilters()
+                    },
                     modifier = Modifier.padding(start = 8.dp)
                 ) {
                     Icon(
@@ -100,7 +67,9 @@ fun Search(viewModel: EventViewModel) {
                 }
             } else {
                 IconButton(
-                    onClick = { showFilterSheet = true },
+                    onClick = {
+                        viewModel.showFilterSheet = true
+                    },
                     modifier = Modifier.padding(start = 8.dp)
                 ) {
                     Icon(
@@ -111,6 +80,33 @@ fun Search(viewModel: EventViewModel) {
                 }
             }
 
+            OutlinedTextField(
+                value = viewModel.searchQuery,
+                onValueChange = { viewModel.searchQuery = it },
+                modifier = Modifier.weight(1f),
+                label = { Text("Rechercher...") },
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search), // Affiche une loupe sur le clavier
+                keyboardActions = KeyboardActions(
+                    onSearch = { viewModel.onApplyFilters() } // Déclenche au clic sur "Entrée"
+                )
+            )
+
+            IconButton(
+                onClick = {
+                    viewModel.onApplyFilters()
+                },
+                modifier = Modifier.padding(start = 8.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = "Loupe",
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+
+
+
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -118,22 +114,46 @@ fun Search(viewModel: EventViewModel) {
         // --- LISTE SCROLLABLE ---
         // LazyColumn est le "Scroll Container" performant pour les listes
         LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(eventsList) { event ->
-                ContainerEvent(event)
+            items(events) { event ->
+                ContainerEvent(
+                    event = event,
+                    modifier = Modifier.clickable {
+                        // On enregistre l'événement cliqué
+                        viewModel.selectedEvent = event
+                    }
+                )
             }
         }
 
-        if (showFilterSheet) {
+        if (viewModel.showFilterSheet) {
             ModalBottomSheet(
-                onDismissRequest = { showFilterSheet = true }
+                // Correction : on met à false pour pouvoir fermer la sheet
+                onDismissRequest = { viewModel.showFilterSheet = false }
             ) {
                 FilterEventSheet(
-                    selectedType = typeState,
-                    distanceKm = distanceState,
+                    initialType = viewModel.typeState,
+                    initialDistance = viewModel.distanceState,
+                    onApply = { newType, newDist ->
+                        viewModel.typeState = newType
+                        viewModel.distanceState = newDist
+                        viewModel.isFilter = true
+                        viewModel.onApplyFilters() // On lance la recherche
+                        viewModel.showFilterSheet = false
+                    },
+                    onClose = { viewModel.showFilterSheet = false }
+                )
+            }
+        }
 
-                    onApply = {},
-
-                    onClose = { showFilterSheet = false }
+        // Si un événement est sélectionné, on ouvre la fiche
+        viewModel.selectedEvent?.let { event ->
+            ModalBottomSheet(
+                onDismissRequest = { viewModel.selectedEvent = null }
+            ) {
+                // Ton composant qui affiche les infos de l'événement
+                DetailsEventSheet(
+                    event = event,
+                    onClose = { viewModel.selectedEvent = null }
                 )
             }
         }

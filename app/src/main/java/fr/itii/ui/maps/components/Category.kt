@@ -5,10 +5,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBalance
+import androidx.compose.material.icons.filled.Celebration
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LocalDining
+import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.Park
 import androidx.compose.material.icons.filled.Place
+import androidx.compose.material.icons.filled.School
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Icon
@@ -29,32 +33,53 @@ fun CategoryMap(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         CategoryChip(
-            label = "Domicile",
+            label = "Concert",
             isSelected = selectedCategory == "Concert",
-            onClick = { onCategorySelected("Domicile") },
+            onClick = { onCategorySelected("Concert") },
             icon = {
-                Icon(Icons.Default.Home, contentDescription = null)
+                Icon(Icons.Default.MusicNote, contentDescription = null)
             }
         )
-
         CategoryChip(
-            label = "Restaurants",
-            isSelected = selectedCategory == "Restaurants",
-            onClick = { onCategorySelected("Restaurants") },
+            label = "Restaurant",
+            isSelected = selectedCategory == "Restaurant",
+            onClick = { onCategorySelected("Restaurant") },
             icon = {
                 Icon(Icons.Default.LocalDining, contentDescription = null)
             }
         )
-
         CategoryChip(
-            label = "Parcs",
-            isSelected = selectedCategory == "Parcs",
-            onClick = { onCategorySelected("Parcs") },
+            label = "Parc",
+            isSelected = selectedCategory == "Parc",
+            onClick = { onCategorySelected("Parc") },
             icon = {
                 Icon(Icons.Default.Park, contentDescription = null)
             }
         )
-
+        CategoryChip(
+            label = "Festival",
+            isSelected = selectedCategory == "Festival",
+            onClick = { onCategorySelected("Festival") },
+            icon = {
+                Icon(Icons.Default.Celebration, contentDescription = null)
+            }
+        )
+        CategoryChip(
+            label = "Monument",
+            isSelected = selectedCategory == "Monument",
+            onClick = { onCategorySelected("Monument") },
+            icon = {
+                Icon(Icons.Default.AccountBalance, contentDescription = null)
+            }
+        )
+        CategoryChip(
+            label = "Ecole",
+            isSelected = selectedCategory == "Ecole",
+            onClick = { onCategorySelected("Ecole") },
+            icon = {
+                Icon(Icons.Default.School, contentDescription = null)
+            }
+        )
         CategoryChip(
             label = "Tout",
             isSelected = selectedCategory == "Tout",
@@ -78,7 +103,7 @@ private fun CategoryChip(
         label = { Text(label) },
         leadingIcon = icon,
         colors = AssistChipDefaults.assistChipColors(
-            containerColor = if (isSelected) Color.White else Color.White,
+            containerColor = if (isSelected) Color.LightGray else Color.White,
             labelColor = Color.Black,
             leadingIconContentColor = Color.Black
         )

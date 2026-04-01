@@ -1,11 +1,16 @@
 package fr.itii.ui.components
 
+import android.R.attr.enabled
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -19,6 +24,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -96,4 +103,54 @@ fun InputField(
         singleLine = true,
         modifier = modifier,
     )
+}
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class) // Nécessaire pour ExposedDropdownMenuBox
+@Composable
+fun SelectField(
+    label: String,
+    value: String,
+    onValueChange: (String) -> Unit,
+    options: List<String>,
+    modifier: Modifier = Modifier
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    // Le conteneur principal du menu
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = !expanded },
+        modifier = modifier // On applique le weight(1f) ici
+    ) {
+        // Le champ de texte (lecture seule pour forcer le choix dans la liste)
+        OutlinedTextField(
+            value = value,
+            onValueChange = {},
+            readOnly = true, // L'utilisateur ne peut pas taper, il doit choisir
+            label = { Text(label) },
+            trailingIcon = {
+                // L'icône flèche qui tourne quand on ouvre
+                ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+            },
+            colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
+            modifier = Modifier.menuAnchor().fillMaxWidth()
+        )
+
+        // La liste qui apparaît au clic
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            options.forEach { selectionOption ->
+                DropdownMenuItem(
+                    text = { Text(selectionOption) },
+                    onClick = {
+                        onValueChange(selectionOption) // On met à jour la valeur
+                        expanded = false // On ferme le menu
+                    },
+                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                )
+            }
+        }
+    }
 }

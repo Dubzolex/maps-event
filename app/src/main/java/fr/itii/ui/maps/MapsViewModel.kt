@@ -56,9 +56,12 @@ class MapsViewModel(private val repository: EventRepository) : ViewModel() {
             // 2. On applique ensuite le filtre de catégorie
             filteredBySearch.filter { event ->
                 when (category) {
-                    "Tout" -> true
-                    "Restaurants" -> event.type.equals("Restaurant", ignoreCase = true)
-                    "Parcs" -> event.type.equals("Parc", ignoreCase = true)
+                    "Restaurant" -> event.type.equals("Restaurant", ignoreCase = true)
+                    "Parc" -> event.type.equals("Parc", ignoreCase = true)
+                    "Concert" -> event.type.equals("Concert", ignoreCase = true)
+                    "Festival" -> event.type.equals("Festival", ignoreCase = true)
+                    "Monument" -> event.type.equals("Monument", ignoreCase = true)
+                    "Ecole" -> event.type.equals("Ecole", ignoreCase = true)
                     else -> true
                 }
             }

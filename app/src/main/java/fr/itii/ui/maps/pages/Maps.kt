@@ -74,7 +74,7 @@ fun Maps(viewModel: MapsViewModel) {
             onMapLongClick = { latLng ->
                 android.widget.Toast.makeText(
                     context,
-                    "Position enregistrée.",
+                    "( ${latLng.latitude.toString().take(6)} , ${latLng.longitude.toString().take(6)} )",
                     android.widget.Toast.LENGTH_SHORT
                 ).show()
 

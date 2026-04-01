@@ -26,6 +26,7 @@ import fr.itii.ui.components.ActionButton
 import fr.itii.ui.components.InputField
 import fr.itii.ui.components.LinkButton
 import fr.itii.ui.components.NeutralButton
+import fr.itii.ui.components.SelectField
 
 
 @Composable
@@ -48,7 +49,7 @@ fun CreateEventSheet(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(20.dp),
+            .padding(10.dp),
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -61,7 +62,7 @@ fun CreateEventSheet(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(10.dp, 20.dp),
+                    .padding(10.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
 
@@ -74,7 +75,14 @@ fun CreateEventSheet(
                         ,
                     horizontalArrangement = Arrangement.spacedBy(20.dp)
                 ) {
-                    InputField(label = "Type", value = type, onValueChange = { type = it }, modifier = Modifier.weight(1f))
+                    SelectField(
+                        label = "Type",
+                        value = type,
+                        onValueChange = { type = it },
+                        modifier = Modifier.weight(1f),
+                        options = listOf( "Restaurant", "Parc", "Concert", "Festival","Monument", "Ecole", "Autre")
+                    )
+
                     InputField(label = "Date", value = date, onValueChange = { date = it }, modifier = Modifier.weight(1f))
                 }
 
