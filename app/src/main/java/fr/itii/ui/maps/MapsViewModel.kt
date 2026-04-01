@@ -1,5 +1,7 @@
 package fr.itii.ui.maps
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -7,6 +9,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.MapType
 import fr.itii.ui.events.EventRepository
@@ -21,7 +24,8 @@ import kotlin.collections.emptyList
 class MapsViewModel(private val repository: EventRepository) : ViewModel() {
 
     // Constante (on pourrait aussi la récupérer via une LiveData/Flow si elle change)
-    val homePosition by mutableStateOf(LatLng(0.0, 0.0))
+    var homePosition by mutableStateOf(LatLng(0.0, 0.0))
+    var temporaryLocation by mutableStateOf(LatLng(0.0, 0.0))
 
     // --- ÉTATS DE FILTRAGE ---
     var searchText by mutableStateOf("")
@@ -34,6 +38,7 @@ class MapsViewModel(private val repository: EventRepository) : ViewModel() {
 
     // --- LOGIQUE DE FILTRAGE RÉACTIVE ---
     // On observe les events du repo et on applique les filtres en temps réel
+
 
     val filteredEvents: StateFlow<List<Events>> = repository.eventsList
         .combine(snapshotFlow { searchText }) { events, query ->
@@ -62,6 +67,25 @@ class MapsViewModel(private val repository: EventRepository) : ViewModel() {
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = emptyList()
         )
+
+    @SuppressLint("MissingPermission")
+    fun searchHomePosition(context: Context) {
+        // On initialise le client avec le contexte passé en paramètre
+        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+
+        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+            if (location != null) {
+                // Mise à jour de la position
+                homePosition = LatLng(location.latitude, location.longitude)
+            } else {
+                // Optionnel : Gérer le cas où la localisation est désactivée sur le tel
+                println("Localisation non trouvée (GPS peut-être éteint)")
+            }
+        }.addOnFailureListener { exception ->
+            // Gérer l'erreur de récupération
+            exception.printStackTrace()
+        }
+    }
 
     // --- ACTIONS ---
     fun toggleMapType() {

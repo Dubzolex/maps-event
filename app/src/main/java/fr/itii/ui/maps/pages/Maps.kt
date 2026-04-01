@@ -13,12 +13,11 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
-import fr.itii.domain.models.collections.Events
 import fr.itii.ui.events.sheets.CreateEventSheet
 import fr.itii.ui.events.sheets.DetailsEventSheet
 import fr.itii.ui.maps.MapsViewModel
@@ -33,10 +32,34 @@ import fr.itii.ui.maps.components.TypeMap
 fun Maps(viewModel: MapsViewModel) {
 
     val events by viewModel.filteredEvents.collectAsState()
+    val context = LocalContext.current
+
+    // 1. On lance la recherche UNIQUEMENT au premier affichage
+    LaunchedEffect(Unit) {
+        viewModel.searchHomePosition(context)
+    }
 
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(viewModel.homePosition, 13f)
+        // On initialise par défaut, mais...
+        //1f	Monde	La Terre entière (vue satellite globale).
+        //5f	Continent	Un continent ou un très grand pays.
+        //10f	Ville	L'ensemble d'une grande agglomération.
+        //15f	Rue (Défaut)	Le quartier avec le nom des rues bien visibles.
+        //20f	Bâtiment	Vue très précise, on voit les contours des immeubles.
+        position = CameraPosition.fromLatLngZoom(viewModel.homePosition, 10f)
     }
+
+    // 2. On "observe" le changement de homePosition pour déplacer la caméra
+    // Dès que le ViewModel trouve la position, la carte zoom dessus automatiquement
+    LaunchedEffect(viewModel.homePosition) {
+        if (viewModel.homePosition.latitude != 0.0 && viewModel.homePosition.longitude != 0.0) {
+            cameraPositionState.animate(
+                CameraUpdateFactory.newLatLngZoom(viewModel.homePosition, 10f)
+            )
+        }
+    }
+
+
 
     Box(modifier = Modifier.fillMaxSize()) {
 
@@ -45,9 +68,18 @@ fun Maps(viewModel: MapsViewModel) {
             modifier = Modifier.fillMaxSize(),
             cameraPositionState = cameraPositionState,
             properties = MapProperties(
-                isMyLocationEnabled = false,
+                isMyLocationEnabled = true,
                 mapType = viewModel.currentMapType
-            )
+            ),
+            onMapLongClick = { latLng ->
+                android.widget.Toast.makeText(
+                    context,
+                    "Position enregistrée.",
+                    android.widget.Toast.LENGTH_SHORT
+                ).show()
+
+                viewModel.temporaryLocation = latLng
+            }
         ) {
             events.forEach { event ->
                 Marker(
@@ -115,6 +147,7 @@ fun Maps(viewModel: MapsViewModel) {
     if (viewModel.showCreateSheet) {
         ModalBottomSheet(onDismissRequest = { viewModel.showCreateSheet = false }) {
             CreateEventSheet(
+                location = viewModel.temporaryLocation,
                 onCreate = { viewModel.addEvent(it) },
                 onClose = { viewModel.showCreateSheet = false }
             )

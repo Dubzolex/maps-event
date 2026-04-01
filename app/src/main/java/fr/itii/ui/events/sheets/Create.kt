@@ -20,6 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.google.android.gms.maps.model.LatLng
 import fr.itii.domain.models.collections.Events
 import fr.itii.ui.components.ActionButton
 import fr.itii.ui.components.InputField
@@ -29,6 +30,7 @@ import fr.itii.ui.components.NeutralButton
 
 @Composable
 fun CreateEventSheet(
+    location: LatLng,
     onCreate: (Events) -> Unit,
     onClose: () -> Unit
 ) {
@@ -38,8 +40,8 @@ fun CreateEventSheet(
     var date by remember { mutableStateOf("") }
     var ville by remember { mutableStateOf("") }
     var adresse by remember { mutableStateOf("") }
-    var latitude by remember { mutableStateOf("") }
-    var longitude by remember { mutableStateOf("") }
+    var latitude by remember { mutableStateOf(location.latitude.toString()) }
+    var longitude by remember { mutableStateOf(location.longitude.toString()) }
 
 
 
@@ -118,6 +120,7 @@ fun CreateEventSheet(
                     onClick = {
                         val newEvent = Events(
                             name = name,
+                            description = description,
                             type = type,
                             date = date,
                             ville = ville,

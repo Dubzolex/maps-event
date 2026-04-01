@@ -106,6 +106,8 @@ dependencies {
     implementation("com.google.maps.android:maps-compose-utils:4.4.1")
     // Le SDK Google Maps de base
     implementation("com.google.android.gms:play-services-maps:18.2.0")
+    //Localisation
+    implementation("com.google.android.gms:play-services-location:21.0.1")
 
     // 4. Lifecycle & ViewModel pour Compose (Indispensable pour MapsViewModel)
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.2")
