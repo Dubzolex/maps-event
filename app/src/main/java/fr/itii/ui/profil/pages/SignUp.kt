@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import fr.itii.domain.models.collections.Users
@@ -36,6 +37,9 @@ fun SignUp(
     var date by remember { mutableStateOf("") }
     var city by remember { mutableStateOf("") }
     var address by remember { mutableStateOf("") }
+
+    val context = LocalContext.current
+
 
 
     LazyColumn(
@@ -103,7 +107,7 @@ fun SignUp(
                             date,
                             city,
                             address)
-                        viewModel.signUp(newUser)
+                        viewModel.signUp(newUser, context)
                     }
                 )
             }

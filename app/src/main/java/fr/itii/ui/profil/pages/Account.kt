@@ -18,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import fr.itii.ui.components.ActionButton
 import fr.itii.ui.profil.UserViewModel
@@ -28,6 +29,9 @@ fun Account(
     viewModel: UserViewModel
 ) {
     val user by viewModel.user.collectAsState()
+
+    val context = LocalContext.current
+
 
     Column(
         modifier = Modifier.fillMaxSize().padding(20.dp),

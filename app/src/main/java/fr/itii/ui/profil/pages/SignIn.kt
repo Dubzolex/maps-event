@@ -19,7 +19,7 @@ import fr.itii.ui.components.LinkButton
 import fr.itii.ui.components.PasswordField
 import fr.itii.ui.profil.UserViewModel
 import fr.itii.ui.components.UserField
-
+import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun SignIn(
@@ -27,6 +27,9 @@ fun SignIn(
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+
+    val context = LocalContext.current
+
 
     Column(
         modifier = Modifier
@@ -66,7 +69,7 @@ fun SignIn(
 
             ActionButton(
                 text = "Se connecter",
-                onClick = { viewModel.signIn(email, password) }
+                onClick = { viewModel.signIn(email, password, context) }
             )
         }
     }

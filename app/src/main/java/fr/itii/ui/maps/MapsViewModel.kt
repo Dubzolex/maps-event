@@ -3,6 +3,7 @@ package fr.itii.ui.maps
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -35,6 +36,10 @@ class MapsViewModel(private val repository: EventRepository) : ViewModel() {
     // --- ÉTATS D'INTERFACE (UI) ---
     var selectedEvent by mutableStateOf<Events?>(null)
     var showCreateSheet by mutableStateOf(false)
+    var showModifySheet by mutableStateOf(false)
+    var showDetailsSheet by mutableStateOf(false)
+
+
 
     // --- LOGIQUE DE FILTRAGE RÉACTIVE ---
     // On observe les events du repo et on applique les filtres en temps réel
@@ -110,6 +115,16 @@ class MapsViewModel(private val repository: EventRepository) : ViewModel() {
                     // Optionnel : tu peux logger l'erreur ou mettre à jour un uiMessage
                     Log.e("MapsViewModel", "Erreur ajout : $message")
                 }
+            }
+        }
+    }
+
+    fun updateEvent(event: Events, context: Context) {
+        repository.update(event) { success, message ->
+            if (success) {
+                showModifySheet = false
+                showDetailsSheet = false // Ferme la ficheSheet
+                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
             }
         }
     }

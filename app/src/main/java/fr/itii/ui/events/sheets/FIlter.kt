@@ -49,12 +49,12 @@ fun FilterEventSheet(
         )
 
         // On affiche la valeur locale 'tempDistance'
-        Text(text = "Distance max : ${tempDistance.toInt()} km")
+        Text(text = "Distance : ${tempDistance.toInt()} km")
 
         Slider(
             value = tempDistance,
             onValueChange = { tempDistance = it },
-            valueRange = 0f..100f
+            valueRange = 0f..200f
         )
 
         Row(

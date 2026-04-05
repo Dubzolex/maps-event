@@ -1,5 +1,7 @@
 package fr.itii.ui.profil
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -11,27 +13,23 @@ class UserViewModel(private val repository: UserRepository) : ViewModel() {
 
     val user: StateFlow<Users?> = repository.userProfile
 
-    var uiMessage by mutableStateOf<String?>(null)
-    private set
-
     // On initialise l'écran selon la présence d'un utilisateur
     var currentScreen by mutableStateOf(
         if (repository.currentUser != null) "Account" else "SignIn"
     )
 
-    fun signUp(user: Users) {
+    fun signUp(user: Users, context: Context) {
         repository.signUp(user) { success, message ->
-            uiMessage = message
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
             if (success) {
-                // Pas besoin de fetch manuel, le Flow du repo va s'actualiser
                 currentScreen = "Account"
             }
         }
     }
 
-    fun signIn(email: String, password: String) {
+    fun signIn(email: String, password: String, context: Context) {
         repository.signIn(email, password) { success, message ->
-            uiMessage = message
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
             if (success) {
                 currentScreen = "Account"
             }
@@ -44,13 +42,9 @@ class UserViewModel(private val repository: UserRepository) : ViewModel() {
         currentScreen = "SignIn"
     }
 
-    fun update(user: Users) {
-        // Simple et efficace : le repo met à jour Firestore,
-        // le snapshotListener renvoie la modif, le StateFlow se met à jour, l'UI change.
+    fun update(user: Users, context: Context) {
         repository.update(user) { success, message ->
-                uiMessage = message
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
         }
     }
-
-    fun clearMessage() { uiMessage = null }
 }

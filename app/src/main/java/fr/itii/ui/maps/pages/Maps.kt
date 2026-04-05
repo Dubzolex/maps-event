@@ -20,6 +20,7 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.maps.android.compose.*
 import fr.itii.ui.events.sheets.CreateEventSheet
 import fr.itii.ui.events.sheets.DetailsEventSheet
+import fr.itii.ui.events.sheets.ModifyEventSheet
 import fr.itii.ui.maps.MapsViewModel
 import fr.itii.ui.maps.components.CategoryMap
 import fr.itii.ui.maps.components.LocationMap
@@ -156,8 +157,17 @@ fun Maps(viewModel: MapsViewModel) {
 
     // Bottom sheet détail
     viewModel.selectedEvent?.let { event ->
-        ModalBottomSheet(onDismissRequest = { viewModel.selectedEvent = null }) {
-            DetailsEventSheet(event = event, onClose = { viewModel.selectedEvent = null })
+        ModalBottomSheet(
+            onDismissRequest = {
+                viewModel.selectedEvent = null
+            }
+        ) {
+            DetailsEventSheet(
+                event = event,
+                onClose = {
+                    viewModel.selectedEvent = null
+                }
+            )
         }
     }
 }

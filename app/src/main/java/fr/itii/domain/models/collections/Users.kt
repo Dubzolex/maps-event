@@ -4,10 +4,10 @@ import com.google.firebase.firestore.DocumentId
 
 data class Users(
     @DocumentId var docId: String = "",
-    val name: String = "",
-    val email: String = "",
-    val password: String = "",
-    val date: String = "",
-    val city: String = "",
-    val address: String = ""
+    var name: String = "",
+    var email: String = "",
+    var password: String = "",
+    var date: String = "",
+    var city: String = "",
+    var address: String = ""
 )

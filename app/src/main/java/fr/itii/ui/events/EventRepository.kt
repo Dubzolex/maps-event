@@ -48,11 +48,11 @@ class EventRepository() {
         db.collection(Table.EVENT.value)
             .add(event)
             .addOnSuccessListener {
-                onResult(true, "Succès")
+                onResult(true, "Evenement ajoute !")
             }
             .addOnFailureListener { e ->
-                Log.e("REPO EVENT", "Erreur add", e)
-                onResult(false, "Erreur lors de la mise à jour : ${e.localizedMessage}")
+                Log.e("REPO EVENT", "Erreur add : ${e.localizedMessage}", e)
+                onResult(false, "Erreur lors de l'ajout.")
             }
     }
 
@@ -63,8 +63,21 @@ class EventRepository() {
                 onResult(true, "Evenement mis à jour !")
             }
             .addOnFailureListener { e ->
-                Log.e("REPO EVENT", "Erreur update", e)
-                onResult(false, "Erreur lors de la mise à jour : ${e.localizedMessage}")
+                Log.e("REPO EVENT", "Erreur update : ${e.localizedMessage}", e)
+                onResult(false, "Erreur lors de la mise à jour.")
             }
     }
+
+    fun delete(event: Events, onResult: (Boolean, String?) -> Unit) {
+        db.collection(Table.EVENT.value).document(event.docId)
+            .delete()
+            .addOnSuccessListener {
+                onResult(true, "Evenement supprimé !")
+            }
+            .addOnFailureListener { e ->
+                Log.e("REPO EVENT", "Erreur delete : ${e.localizedMessage}", e)
+                onResult(false, "Erreur lors de la suppression.")
+            }
+    }
+
 }

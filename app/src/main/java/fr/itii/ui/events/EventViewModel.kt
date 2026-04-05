@@ -1,5 +1,7 @@
 package fr.itii.ui.events
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -29,6 +31,7 @@ class EventViewModel(private val repository: EventRepository)  : ViewModel() {
 
     var showFilterSheet by mutableStateOf(false)
     var showDetailsSheet by mutableStateOf(false)
+    var showModifySheet by mutableStateOf(false)
     var isFilter by mutableStateOf(false)
 
 
@@ -74,4 +77,21 @@ class EventViewModel(private val repository: EventRepository)  : ViewModel() {
     fun onApplyFilters() {
         filterTrigger.tryEmit(Unit)
     }
+
+    fun updateEvent(event: Events, context: Context) {
+        repository.update(event) { success, message ->
+            if (success) {
+                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    fun deleteEvent(event: Events, context: Context) {
+        repository.delete(event) { success, message ->
+            if (success) {
+                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
 }

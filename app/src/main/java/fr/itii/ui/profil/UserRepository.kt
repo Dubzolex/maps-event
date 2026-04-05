@@ -3,6 +3,8 @@ package fr.itii.ui.profil
 import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.firestore
 
@@ -33,7 +35,7 @@ class UserRepository() {
     private fun startUserObserver(uid: String) {
         db.collection(Table.USER.value).document(uid).addSnapshotListener { snapshot, e ->
             if (e != null) {
-                Log.e("REPO", "Erreur écoute utilisateur", e)
+                Log.e("REPO", "Erreur ecoute utilisateur", e)
                 return@addSnapshotListener
             }
             userProfileStat.value = snapshot?.toObject(Users::class.java)
@@ -44,7 +46,7 @@ class UserRepository() {
 
     fun signUp(user: Users, onResult: (Boolean, String?) -> Unit) {
         if (auth.currentUser != null) {
-            onResult(true, "Déjà connecté.")
+            onResult(true, "Deja connecte.")
             return
         }
 
@@ -63,7 +65,7 @@ class UserRepository() {
                     add(uid, user) { success, message ->
                         if (success) {
                             startUserObserver(uid) // On commence à écouter
-                            onResult(true, "Inscription réussie.")
+                            onResult(true, "Inscription reussie.")
                         } else {
                             onResult(false, message)
                         }
@@ -75,17 +77,35 @@ class UserRepository() {
     }
 
     fun signIn(email: String, password: String, onResult: (Boolean, String?) -> Unit) {
+        if (email.isEmpty() || password.isEmpty()) {
+            onResult(false, "Veuillez remplir tous les champs.")
+            return
+        }
+
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val uid = auth.currentUser?.uid ?: ""
                     startUserObserver(uid)
-                    onResult(true, "Connecté.")
+                    onResult(true, "Connecté !")
                 } else {
-                    onResult(false, "Erreur : ${task.exception?.localizedMessage}")
+                    val message = when (val e = task.exception) {
+                        is FirebaseAuthInvalidUserException -> {
+                            "Compte inexistant !"
+                        }
+                        is FirebaseAuthInvalidCredentialsException -> {
+                            "Email ou mot de passe incorrect !"
+                        }
+                        else -> {
+                            "Identifiants incorrects !"
+                        }
+                    }
+                    Log.e("REPO", "Erreur connexion : ${task.exception?.localizedMessage}", task.exception)
+                    onResult(false, message)
                 }
             }
     }
+
 
     fun logout() {
         auth.signOut()

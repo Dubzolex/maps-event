@@ -28,11 +28,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import fr.itii.ui.events.EventViewModel
 import fr.itii.ui.events.sheets.DetailsEventSheet
 import fr.itii.ui.events.sheets.FilterEventSheet
+import fr.itii.ui.events.sheets.ModifyEventSheet
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,6 +42,8 @@ import fr.itii.ui.events.sheets.FilterEventSheet
 fun Search(viewModel: EventViewModel) {
 
     val events by viewModel.filteredEvents.collectAsState()
+    val context = LocalContext.current
+
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -120,6 +124,7 @@ fun Search(viewModel: EventViewModel) {
                     modifier = Modifier.clickable {
                         // On enregistre l'événement cliqué
                         viewModel.selectedEvent = event
+                        viewModel.showDetailsSheet = true
                     }
                 )
             }
@@ -147,14 +152,45 @@ fun Search(viewModel: EventViewModel) {
 
         // Si un événement est sélectionné, on ouvre la fiche
         viewModel.selectedEvent?.let { event ->
-            ModalBottomSheet(
-                onDismissRequest = { viewModel.selectedEvent = null }
-            ) {
-                // Ton composant qui affiche les infos de l'événement
-                DetailsEventSheet(
-                    event = event,
-                    onClose = { viewModel.selectedEvent = null }
-                )
+
+            if (viewModel.showModifySheet) {
+                ModalBottomSheet(
+                    onDismissRequest = { viewModel.showModifySheet = false }
+                ) {
+                    ModifyEventSheet(
+                        event = event,
+                        onModify = {
+                            viewModel.updateEvent(it, context)
+                            viewModel.showModifySheet = false
+                            viewModel.selectedEvent = null
+                        },
+                        onClose = { viewModel.showModifySheet = false }
+
+                    )
+                }
+            } else if (viewModel.showDetailsSheet) {
+                ModalBottomSheet(
+                    onDismissRequest = {
+                        viewModel.selectedEvent = null
+                        viewModel.showDetailsSheet = false
+                    }
+                ) {
+                    DetailsEventSheet(
+                        event = event,
+                        onModify = {
+                            viewModel.showDetailsSheet = false
+                            viewModel.showModifySheet = true
+                        },
+                        onClose = {
+                            viewModel.selectedEvent = null
+                            viewModel.showDetailsSheet = false
+                        },
+                        onDelete = {
+                            viewModel.deleteEvent(event, context)
+                            viewModel.showDetailsSheet = false
+                        }
+                    )
+                }
             }
         }
     }

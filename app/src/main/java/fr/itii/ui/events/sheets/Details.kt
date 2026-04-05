@@ -11,13 +11,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import fr.itii.domain.models.collections.Events
+import fr.itii.ui.components.ActionButton
 import fr.itii.ui.components.NeutralButton
 
 
 @Composable
 fun DetailsEventSheet(
     event: Events,
-    onClose: () -> Unit
+    onClose: () -> Unit,
+    onModify: (() -> Unit)? = null,
+    onDelete: (() -> Unit)? = null
 ) {
     Column(
         modifier = Modifier
@@ -43,16 +46,37 @@ fun DetailsEventSheet(
         Text(text = "Latitude : ${event.latitude}")
         Text(text = "Longitude : ${event.longitude}")
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(20.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            NeutralButton(
-                text = "Fermer",
-                onClick = onClose
-            )
+        if(onModify == null && onDelete == null) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                NeutralButton(
+                    text = "Fermer",
+                    onClick = onClose
+                )
+            }
         }
+        if(onModify != null && onDelete != null) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                ActionButton(
+                    text = "Modifier",
+                    onClick = onModify
+                )
+                ActionButton(
+                    text = "Supprimer",
+                    onClick = onDelete
+                )
+
+            }
+        }
+
     }
 }
